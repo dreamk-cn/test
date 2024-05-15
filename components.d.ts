@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     CardHomework: typeof import('./src/components/card-homework/card-homework.vue')['default']
+    CustomNavBar: typeof import('./src/components/custom-nav-bar/custom-nav-bar.vue')['default']
     GuoduCalendar: typeof import('./src/widgets/guodu-calendar/guodu-calendar.vue')['default']
     GuoduColorPicker: typeof import('./src/widgets/guodu-color-picker/guodu-color-picker.vue')['default']
     GuoduDrawer: typeof import('./src/widgets/guodu-drawer/guodu-drawer.vue')['default']

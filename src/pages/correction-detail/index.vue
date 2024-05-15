@@ -1,64 +1,140 @@
 <script setup lang="ts">
-import * as echarts from 'echarts'
 import type { ECOption } from '~/widgets/guodu-echarts/echarts'
 
+// 得分率echarts配置
 const chartData1 = ref<ECOption>({
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      // 坐标轴指示器，坐标轴触发有效
-      type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
-    },
-    confine: true,
-  },
-  legend: {
-    data: ['销量', '收入'],
-  },
-  grid: {
-    left: 20,
-    right: 20,
-    bottom: 15,
-    top: 40,
-    containLabel: true,
-  },
-  xAxis: {
-    type: 'category',
-    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-  },
-  yAxis: {
-    type: 'value',
-  },
   series: [
     {
-      name: '销量',
-      data: [20, 30, 40, 50, 60, 70, 80],
-      type: 'bar',
-      showBackground: true,
-    },
-    {
-      name: '收入',
-      data: [30, 40, 50, 60, 70, 80, 90],
-      type: 'bar',
-      showBackground: true,
+      type: 'gauge',
+      pointer: {
+        show: false,
+      },
+      itemStyle: {
+        color: 'white',
+      },
+      progress: {
+        show: true,
+        width: 6,
+        roundCap: true,
+      },
+      axisLine: {
+        show: true,
+        roundCap: true,
+        lineStyle: {
+          width: 6,
+          color: [[0, '#1d8c66'], [100, '#1d8c66']],
+        },
+      },
+      radius: '40px',
+      axisTick: {
+        show: false,
+      },
+      splitLine: {
+        show: false,
+      },
+      axisLabel: {
+        show: false,
+      },
+      anchor: {
+        show: false,
+      },
+      detail: {
+        show: true,
+        valueAnimation: true,
+        fontSize: '14',
+        offsetCenter: ['0%', '0%'],
+        color: 'white',
+        formatter(value) {
+          return `${value}%`
+        },
+      },
+      data: [
+        {
+          value: 90,
+        },
+      ],
     },
   ],
 })
-// setTimeout(() => {
-//   // eslint-disable-next-line ts/ban-ts-comment
-//   // @ts-expect-error
-//   chartData1.value.series[0].data = [51, 130, 50, 40, 60, 80, 55]
-// }, 2000)
+
+// 轮播图echarts配置
+const chartData2 = ref<ECOption>({
+  legend: {
+    data: ['正确人数', '错误人数'],
+    align: 'left',
+    bottom: '0%',
+    left: 'center',
+    itemStyle: {
+      borderJoin: 'round',
+      borderCap: 'round',
+    },
+  },
+  xAxis: {
+    type: 'category',
+    boundaryGap: false,
+    data: ['第1题', '第2题', '第3题', '第4题', '第5题', '第6题'],
+  },
+  yAxis: {
+    type: 'value',
+    axisLabel: {
+      formatter: '{value}',
+    },
+  },
+  grid: {
+    left: 30,
+    right: 35,
+    top: 20,
+    bottom: 30,
+    containLabel: true,
+  },
+  series: [
+    {
+      name: '正确人数',
+      type: 'bar',
+      barGap: 0,
+      color: ['#00A76E'],
+      barWidth: '8rpx',
+      data: [[40, 2], [30, 6], [20, 2], [80, 9], [50, 3], [30, 2]].map(item => item[0]),
+      itemStyle: {
+        borderRadius: 20,
+      },
+    },
+    {
+      name: '错误人数',
+      type: 'bar',
+      color: ['#FF485E'],
+      barWidth: '8rpx',
+      data: [[40, 2], [30, 6], [20, 2], [80, 9], [50, 3], [30, 2]].map(item => item[1]),
+      itemStyle: {
+        borderRadius: 20,
+      },
+    },
+  ],
+})
+
+const tabs = ref(['有错', '全对', '部分批改', '未批改'])
+const curTab = ref(0)
+
+// 返回上一页
+function handleClickBack() {
+  uni.navigateBack()
+}
 </script>
 
 <template>
   <view class="bg-[#f5f5f9]">
     <view class="px-30rpx bg-[#00A76E] color-white h-[540rpx] w-[750rpx]">
       <view class="mb-45rpx">
-        <GuoduNavBar title="批改详情" :show-back="true">
+        <custom-nav-bar>
           <template #icon>
-            返回
+            <view class="i-carbon-chevron-left h-35rpx w-35rpx" @tap="handleClickBack" />
           </template>
-        </GuoduNavBar>
+          <template #content>
+            <view class="text-32rpx font-bold text-white">
+              批改详情
+            </view>
+          </template>
+        </custom-nav-bar>
       </view>
       <view class="mb-20rpx flex items-center">
         <view class="mr-20rpx text-32rpx font-bold text-white">
@@ -80,10 +156,20 @@ const chartData1 = ref<ECOption>({
             时间：10/10 12:00 - 10/20 12:00
           </view>
         </view>
-        <view />
+        <view>
+          <view class="h-165rpx w-165rpx">
+            <GuoduEcharts
+              :options="chartData1" canvas-id="chartData1"
+            />
+          </view>
+          <view class="text-22rpx text-center text-white">
+            平均得分率
+          </view>
+        </view>
       </view>
     </view>
     <view class="transform-translate-y-[-20rpx]">
+      <!-- 柱状图 -->
       <view class="pb-35rpx pt-50rpx mb-25rpx bg-white rounded-30rpx">
         <view class="px-30rpx flex justify-between items-center">
           <view class="text-30rpx font-bold text-[#000333]">
@@ -93,13 +179,13 @@ const chartData1 = ref<ECOption>({
             左右滑动可查看更多数据~
           </view>
         </view>
-        <view class="h-310rpx w-full">
+        <view class="h-430rpx w-full">
           <GuoduEcharts
-            ref="echarts"
-            :options="chartData1" canvas-id="chartData1"
+            :options="chartData2" canvas-id="chartData2"
           />
         </view>
       </view>
+      <!-- 最高得分率 -->
       <view class="px-30rpx pb-35rpx pt-35rpx mb-25rpx bg-white rounded-30rpx">
         <view class="mb-35rpx flex justify-between items-center">
           <view class="text-30rpx font-bold text-[#000333]">
@@ -107,7 +193,7 @@ const chartData1 = ref<ECOption>({
           </view>
           <view class="text-38rpx font-bold text-#00A76E relative">
             75%
-            <view class="bg-#E7F3EF absolute h-6rpx bottom-4rpx left-0 right-0 z--1" />
+            <view class="bg-#E7F3EF absolute h-6rpx bottom-4rpx left-0 right-0" />
           </view>
         </view>
         <view class="grid grid-cols-3 gap-150rpx gap-y-40rpx">
@@ -119,6 +205,7 @@ const chartData1 = ref<ECOption>({
           </view>
         </view>
       </view>
+      <!-- 最低得分率 -->
       <view class="px-30rpx pb-35rpx pt-35rpx mb-25rpx bg-white rounded-30rpx">
         <view class="mb-35rpx flex justify-between items-center">
           <view class="text-30rpx font-bold text-[#000333]">
@@ -126,7 +213,7 @@ const chartData1 = ref<ECOption>({
           </view>
           <view class="text-38rpx font-bold text-#FC5260 relative">
             35%
-            <view class="bg-#F6E6E8 absolute h-6rpx bottom-4rpx left-0 right-0 z--1" />
+            <view class="bg-#F6E6E8 absolute h-6rpx bottom-4rpx left-0 right-0" />
           </view>
         </view>
         <view class="grid grid-cols-3 gap-150rpx gap-y-40rpx">
@@ -138,23 +225,12 @@ const chartData1 = ref<ECOption>({
           </view>
         </view>
       </view>
+      <!-- 批改状态 -->
       <view class="px-30rpx pb-100rpx pt-35rpx bg-white rounded-30rpx rounded-b-none">
         <view class="mb-40rpx flex gap-40rpx items-center">
-          <view class="text-28rpx font-bold text-#00A76E">
-            有错
-            <view class="mx-auto mt-15rpx bg-#00A76E rounded-3rpx h-6rpx w-80%" />
-          </view>
-          <view class="text-28rpx font-bold text-#000333">
-            全对
-            <view class="mx-auto mt-15rpx opacity-0 bg-#00A76E rounded-3rpx h-6rpx w-80%" />
-          </view>
-          <view class="text-28rpx font-bold text-#000333">
-            部分批改
-            <view class="mx-auto mt-15rpx opacity-0 bg-#00A76E rounded-3rpx h-6rpx w-80%" />
-          </view>
-          <view class="text-28rpx font-bold text-#000333">
-            未批改
-            <view class="mx-auto mt-15rpx opacity-0 bg-#00A76E rounded-3rpx h-6rpx w-80%" />
+          <view v-for="(item, index) in tabs" :key="item" class="text-28rpx font-bold transition-opacity" :class="[curTab === index ? 'text-#00A76E' : '']" @click="curTab = index">
+            {{ item }}
+            <view class="mx-auto mt-15rpx bg-#00A76E rounded-3rpx h-6rpx w-80% transition-opacity" :class="[curTab === index ? '' : 'opacity-0']" />
           </view>
         </view>
         <view class="py-22rpx b b-b-#E8EAF1 b-none b-solid b-l-none b-r-none b-t-none text-24rpx text-#8F9AA8 flex justify-between">
@@ -164,7 +240,7 @@ const chartData1 = ref<ECOption>({
           <view class="flex-1">
             批改状态
           </view>
-          <view class="text-center">
+          <view class="text-center w-130rpx">
             正确率
           </view>
         </view>
@@ -175,7 +251,7 @@ const chartData1 = ref<ECOption>({
           <view class="flex-1">
             鲁迅
           </view>
-          <view class="text-center">
+          <view class="text-center text-#00A76E w-130rpx">
             10%
           </view>
         </view>

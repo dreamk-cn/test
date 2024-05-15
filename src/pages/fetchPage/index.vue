@@ -22,7 +22,7 @@ onPullDownRefresh(() => {
   })
 })
 onReachBottom(() => {
-  next()
+  load()
 })
 </script>
 

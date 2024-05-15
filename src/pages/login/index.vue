@@ -26,39 +26,43 @@ function handleLogin() {
     uni.switchTab({ url: '/pages/mine/index' })
   })
 }
-function handleLoginByCode() { }
 </script>
 
 <template>
-  <view class="flex flex-col w-full justify-center items-center" style="padding-top: 150rpx;">
-    <!-- 头部logo -->
-    <image class="h-150 w-150" src="~/~/static/logo.png" />
-    <!-- 账号 -->
-    <input v-model="account" type="text" placeholder="请输入账号" class="input px-5 my-5 rounded-full shadow-$box-shadow-3 h-100 w-80%" style="margin-top: 50rpx;">
-    <!-- 密码 -->
-    <input v-model="pwd" type="password" placeholder="请输入密码" class="input px-5 my-5 rounded-full shadow-$box-shadow-3 h-100 w-80%">
-    <!-- 登录按钮 -->
-    <button class="btn btn-primary" @tap="handleLogin">
-      登录
-    </button>
-    <!-- 快捷登录 -->
-    <!-- #ifdef MP-WEIXIN -->
-    <view class="flex flex-col fixed justify-center items-center bottom-50">
-      <image class="p-2 rounded-50rpx shadow-$box-shadow-1 h-80 w-80" src="../../static/icon/wechat.png" @tap="handleLoginByCode" />
+  <view class="bg-#F5F5F9 h-100vh">
+    <view class="login-bg text-55rpx font-bold text-white flex-center h-520rpx w-750rpx">
+      LOGO
     </view>
-    <!-- #endif -->
+    <view class="p-50rpx bg-#F5F5F9 rounded-t-30rpx transform-translate-y--50rpx">
+      <view class="mb-50rpx text-40rpx font-bold text-#000333">
+        教师端登录
+      </view>
+      <view class="p-26rpx mx-auto mb-25rpx bg-white rounded-20rpx flex h-90rpx w-650rpx items-center">
+        <view class="i-carbon-user-filled text-38rpx text-#96a5b8" />
+        <input v-model="account" class="uni-input placeholder-[#8F9AA8] ml-25rpx text-#8F9AA8 flex-1 h-full" focus placeholder="请输入手机号">
+      </view>
+      <view class="p-26rpx mx-auto mb-40rpx bg-white rounded-20rpx flex h-90rpx w-650rpx items-center">
+        <view class="i-carbon-phone-block-filled text-38rpx text-#96a5b8" />
+        <input v-model="pwd" class="uni-input placeholder-[#8F9AA8] ml-25rpx text-#8F9AA8 flex-1 h-full" type="password" placeholder="请输入密码">
+      </view>
+      <view class="mb-40rpx bg-#00A76E rounded-20rpx line-height-90rpx text-center text-white h-90rpx w-full" @tap="handleLogin">
+        登录
+      </view>
+      <view class="text-24rpx text-center text-#8F9AA8">
+        登录即代表阅读并同意
+        <text class="text-#000333">
+          《智慧作业用户协议》
+        </text>
+      </view>
+    </view>
   </view>
 </template>
 
 <style>
-.btn {
-  margin-top: 50rpx;
-  width: 80%;
-  border-radius: 999rpx;
-  box-shadow: var(--box-shadow-3);
-}
-
-.uni-input:focus{
-  border: 1px solid red;
+.login-bg {
+  background-image: url("https://guodu-homework.oss-cn-beijing.aliyuncs.com/static/teacher/login_top_bg.png");
+  background-size: 750rpx 530rpx;
+  background-repeat: no-repeat;
+  min-height: 530rpx;
 }
 </style>

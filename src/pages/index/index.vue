@@ -130,7 +130,7 @@ onLoad(() => {
     <view>
       <!-- 自定义头部导航栏 -->
       <view class="px-[30rpx] mb-[25rpx]">
-        <view :style="[tops ? `height:${tops}px` : `height: 1.2rem`]" />
+        <view :style="[tops ? `height:${tops}px` : `height: 95rpx`]" />
         <view class="text-40 font-bold h-38" :style="[height ? `height:${height}px; line-height: ${height}px` : `height: auto; line-height: normal`]">
           智慧作业教师端
         </view>
@@ -163,7 +163,7 @@ onLoad(() => {
             <view :class="[curDay === index ? 'bg-[#00A76E] text-white font-bold' : 'bg-transparent text-[#000333]'] " class="mx-auto rounded-[20rpx] text-[36rpx] line-height-[66rpx] text-center h-[66rpx] w-[66rpx] transition-opacity">
               {{ day }}
             </view>
-            <view class="mx-auto mb-[5rpx] mt-[10rpx] bg-[#00A76E] rounded-1/2 h-[12rpx] w-[12rpx] transition-opacity" :class="[(count && curDay !== index) ? '' : 'opacity-0']" />
+            <view class="mx-auto bg-[#00A76E] rounded-1/2 h-[12rpx] w-[12rpx] transition-opacity" :class="[(count && curDay !== index) ? '' : 'opacity-0']" />
             <view class="text-[22rpx] line-height-[34rpx] text-center text-[#000333] transition-opacity" :class="[(count && curDay === index) ? '' : 'opacity-0']">
               {{ count }}份作业
             </view>
