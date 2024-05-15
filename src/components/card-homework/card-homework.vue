@@ -46,24 +46,24 @@ const typeMessage = computed(() => {
 </script>
 
 <template>
-  <view class="px-[25rpx] py-[30rpx] bg-white rounded-[20rpx]">
-    <view class="mb-[30rpx] flex justify-between">
+  <view class="px-25rpx py-30rpx bg-white rounded-20rpx">
+    <view class="mb-30rpx flex justify-between">
       <view class="flex">
-        <view class="px-[20rpx] py-[10rpx] bg-[#EBF6FF] rounded-[20rpx] text-[20rpx] font-bold text-[#0084FF]">
+        <view class="px-20rpx py-10rpx bg-[#EBF6FF] rounded-20rpx text-20rpx font-bold text-[#0084FF]">
           {{ typeMessage }}
         </view>
-        <view class="ml-[19rpx] text-[30rpx] font-bold text-[#000333]">
+        <view class="ml-19rpx text-30rpx font-bold text-[#000333]">
           {{ title }}
         </view>
       </view>
       <view class="flex items-center">
-        <view class="h-[24rpx] w-[24rpx]" :class="[statusStyle]" />
-        <view class="ml-[12rpx] text-[22rpx] text-[#000333]">
+        <view class="h-24rpx w-24rpx" :class="[statusStyle]" />
+        <view class="ml-12rpx text-22rpx text-[#000333]">
           {{ statusMessage }}
         </view>
       </view>
     </view>
-    <view class="text-[24rpx] flex h-[92rpx] justify-between">
+    <view class="text-24rpx flex h-92rpx justify-between">
       <view>
         <text class="text-[#000333]">
           发布日期:
@@ -83,20 +83,20 @@ const typeMessage = computed(() => {
     </view>
     <view class="flex justify-between items-center">
       <view>
-        <view class="mb-[10rpx] text-[26rpx] font-bold text-[#000333]">
-          <text class="text-[36rpx] text-[#00A76E]">
+        <view class="mb-10rpx text-26rpx font-bold text-[#000333]">
+          <text class="text-36rpx text-[#00A76E]">
             {{ done }}
           </text>/{{ total }}
         </view>
-        <view class="text-[22rpx] text-[#000333]">
+        <view class="text-22rpx text-[#000333]">
           已批改人数
         </view>
       </view>
       <view class="flex">
-        <view class="bg-white b b-1 border-[#C9CED9] rounded-[33rpx] border-solid text-[26rpx] text-[#000333] flex-center h-[66rpx] w-[170rpx]">
+        <view class="bg-white b b-1 border-[#C9CED9] rounded-33rpx border-solid text-26rpx text-[#000333] flex-center h-66rpx w-170rpx">
           作业详情
         </view>
-        <view class="ml-[20rpx] bg-[#00A76E] b b-1 border-transparent rounded-[33rpx] border-solid text-[26rpx] text-white flex-center h-[66rpx] w-[170rpx]">
+        <view class="ml-20rpx bg-[#00A76E] b b-1 border-transparent rounded-33rpx border-solid text-26rpx text-white flex-center h-66rpx w-170rpx">
           学情报告
         </view>
       </view>

@@ -81,7 +81,7 @@ const chartData2 = ref<ECOption>({
     ],
     textStyle: {
       color: '#8F9AA8',
-      fontSize: '22rpx',
+      fontSize: '14',
     },
     align: 'left',
     bottom: '0%',
@@ -158,8 +158,8 @@ function handleClickBack() {
 
 <template>
   <view class="bg-[#f5f5f9]">
-    <view class="px-30rpx bg-[#00A76E] color-white h-[540rpx] w-[750rpx]">
-      <view class="mb-45rpx">
+    <view class="px-30rpx bg-[#00A76E] color-white h-540rpx w-750rpx">
+      <view class="mb-40rpx">
         <custom-nav-bar>
           <template #icon>
             <view class="i-carbon-chevron-left h-35rpx w-35rpx" @tap="handleClickBack" />
@@ -181,18 +181,18 @@ function handleClickBack() {
       </view>
       <view class="flex justify-between">
         <view class="text-24rpx text-white">
-          <view class="my-37rpx">
+          <view class="my-35rpx">
             班级：五年级一班 数学
           </view>
           <view>
             辅码：一人一码
           </view>
-          <view class="my-37rpx">
+          <view class="my-35rpx">
             时间：10/10 12:00 - 10/20 12:00
           </view>
         </view>
         <view>
-          <view class="h-165rpx w-165rpx">
+          <view class="h-160rpx w-175rpx">
             <GuoduEcharts
               :options="chartData1" canvas-id="chartData1"
             />
@@ -203,7 +203,7 @@ function handleClickBack() {
         </view>
       </view>
     </view>
-    <view class="transform-translate-y-[-25rpx]">
+    <view class="transform-translate-y--25rpx">
       <!-- 柱状图 -->
       <view class="pb-35rpx pt-50rpx mb-25rpx bg-white rounded-30rpx">
         <view class="px-30rpx flex justify-between items-center">

@@ -129,23 +129,23 @@ onLoad(() => {
     <!-- 顶部日期部分 -->
     <view>
       <!-- 自定义头部导航栏 -->
-      <view class="px-[30rpx] mb-[25rpx]">
+      <view class="px-30rpx mb-25rpx">
         <view :style="[tops ? `height:${tops}px` : `height: 95rpx`]" />
         <view class="text-40 font-bold h-38" :style="[height ? `height:${height}px; line-height: ${height}px` : `height: auto; line-height: normal`]">
           智慧作业教师端
         </view>
       </view>
       <!-- 选择年月 -->
-      <view class="px-[30rpx] mb-[30rpx] flex justify-between items-center">
+      <view class="px-30rpx mb-30rpx flex justify-between items-center">
         <picker class="h-full" mode="date" :value="selectDate" :start="startDate" :end="endDate" fields="month" @change="handleSelectDate">
           <view class="flex relative items-center">
             <text class="text-38 font-bold color-[#000333]">
               {{ selectDate }}
             </text>
-            <view class="i-carbon-chevron-down ml-[17rpx] text-28 text-[#778496]" />
+            <view class="i-carbon-chevron-down ml-17rpx text-28 text-[#778496]" />
           </view>
         </picker>
-        <view class="p-x-[23rpx] bg-[#ffffff66] b b-[2px] border-[#fff] rounded-[18rpx] border-solid h-70 w-250 box-border">
+        <view class="p-x-23rpx bg-[#ffffff66] b b-2px border-[#fff] rounded-18rpx border-solid h-70 w-250 box-border">
           <picker mode="selector" :value="selectClass" :range="classList" @change="handleSelectClass">
             <view class="flex h-66 justify-between items-center">
               <text class="text-26">
@@ -157,14 +157,14 @@ onLoad(() => {
         </view>
       </view>
       <!-- 选择天 -->
-      <view class="mb-[30rpx]">
+      <view class="mb-30rpx">
         <scroll-view class="whitespace-nowrap" scroll-x :show-scrollbar="false">
-          <view v-for="({ id, day, count }, index) in dayList" :key="id" class="day-item mx-[10rpx] inline-block" @tap="handleSelectDay(index)">
-            <view :class="[curDay === index ? 'bg-[#00A76E] text-white font-bold' : 'bg-transparent text-[#000333]'] " class="mx-auto rounded-[20rpx] text-[36rpx] line-height-[66rpx] text-center h-[66rpx] w-[66rpx] transition-opacity">
+          <view v-for="({ id, day, count }, index) in dayList" :key="id" class="day-item mx-10rpx inline-block" @tap="handleSelectDay(index)">
+            <view :class="[curDay === index ? 'bg-[#00A76E] text-white font-bold' : 'bg-transparent text-[#000333]'] " class="mx-auto rounded-20rpx text-36rpx line-height-66rpx text-center h-66rpx w-66rpx transition-opacity">
               {{ day }}
             </view>
-            <view class="mx-auto bg-[#00A76E] rounded-1/2 h-[12rpx] w-[12rpx] transition-opacity" :class="[(count && curDay !== index) ? '' : 'opacity-0']" />
-            <view class="text-[22rpx] line-height-[34rpx] text-center text-[#000333] transition-opacity" :class="[(count && curDay === index) ? '' : 'opacity-0']">
+            <view class="mx-auto bg-[#00A76E] rounded-1/2 h-12rpx w-12rpx transition-opacity" :class="[(count && curDay !== index) ? '' : 'opacity-0']" />
+            <view class="text-22rpx line-height-34rpx text-center text-[#000333] transition-opacity" :class="[(count && curDay === index) ? '' : 'opacity-0']">
               {{ count }}份作业
             </view>
           </view>
@@ -173,12 +173,12 @@ onLoad(() => {
       <view />
     </view>
     <!-- 中间功能模块 -->
-    <view class="px-[30rpx] mb-[30rpx] grid grid-cols-4 gap-y-[30rpx]">
+    <view class="px-30rpx mb-30rpx grid grid-cols-4 gap-y-30rpx">
       <view @tap="handleTo('publish-homework')">
         <view class="mx-auto h-100 w-120">
           <image class="h-full w-full" src="..\..\static\icon\index-setion\section1.png" mode="aspectFill" />
         </view>
-        <view class="mt-[17rpx] text-[22rpx] text-center text-[#000333]">
+        <view class="mt-17rpx text-22rpx text-center text-[#000333]">
           发布作业
         </view>
       </view>
@@ -186,7 +186,7 @@ onLoad(() => {
         <view class="mx-auto h-100 w-120">
           <image class="h-full w-full" src="..\..\static\icon\index-setion\section2.png" mode="aspectFill" />
         </view>
-        <view class="mt-[17rpx] text-[22rpx] text-center text-[#000333]">
+        <view class="mt-17rpx text-22rpx text-center text-[#000333]">
           批改作业
         </view>
       </view>
@@ -194,7 +194,7 @@ onLoad(() => {
         <view class="mx-auto h-100 w-120">
           <image class="h-full w-full" src="..\..\static\icon\index-setion\section3.png" mode="aspectFill" />
         </view>
-        <view class="mt-[17rpx] text-[22rpx] text-center text-[#000333]">
+        <view class="mt-17rpx text-22rpx text-center text-[#000333]">
           发布学习计划
         </view>
       </view>
@@ -202,7 +202,7 @@ onLoad(() => {
         <view class="mx-auto h-100 w-120">
           <image class="h-full w-full" src="..\..\static\icon\index-setion\section4.png" mode="aspectFill" />
         </view>
-        <view class="mt-[17rpx] text-[22rpx] text-center text-[#000333]">
+        <view class="mt-17rpx text-22rpx text-center text-[#000333]">
           共性错题分析
         </view>
       </view>
@@ -210,7 +210,7 @@ onLoad(() => {
         <view class="mx-auto h-100 w-120">
           <image class="h-full w-full" src="..\..\static\icon\index-setion\section5.png" mode="aspectFill" />
         </view>
-        <view class="mt-[17rpx] text-[22rpx] text-center text-[#000333]">
+        <view class="mt-17rpx text-22rpx text-center text-[#000333]">
           离线批改
         </view>
       </view>
@@ -218,7 +218,7 @@ onLoad(() => {
         <view class="mx-auto h-100 w-120">
           <image class="h-full w-full" src="..\..\static\icon\index-setion\section6.png" mode="aspectFill" />
         </view>
-        <view class="mt-[17rpx] text-[22rpx] text-center text-[#000333]">
+        <view class="mt-17rpx text-22rpx text-center text-[#000333]">
           学情分析
         </view>
       </view>
@@ -226,7 +226,7 @@ onLoad(() => {
         <view class="mx-auto h-100 w-120">
           <image class="h-full w-full" src="..\..\static\icon\index-setion\section7.png" mode="aspectFill" />
         </view>
-        <view class="mt-[17rpx] text-[22rpx] text-center text-[#000333]">
+        <view class="mt-17rpx text-22rpx text-center text-[#000333]">
           挑题组卷
         </view>
       </view>
@@ -234,14 +234,14 @@ onLoad(() => {
         <view class="mx-auto h-100 w-120">
           <image class="h-full w-full" src="..\..\static\icon\index-setion\section8.png" mode="aspectFill" />
         </view>
-        <view class="mt-[17rpx] text-[22rpx] text-center text-[#000333]">
+        <view class="mt-17rpx text-22rpx text-center text-[#000333]">
           我的积分
         </view>
       </view>
     </view>
     <!-- 底部作业列表模块 -->
-    <view class="px-[30rpx]">
-      <view v-for="item in homeworkList" :key="item.id" class="mb-[30rpx]">
+    <view class="px-30rpx">
+      <view v-for="item in homeworkList" :key="item.id" class="mb-30rpx">
         <card-homework
           :title="item.title" :type="item.type" :status="item.status" :start-time="item.start_time"
           :end-time="item.end_time" :total="item.total" :done="item.done"
@@ -262,6 +262,12 @@ onLoad(() => {
     &:last-child {
       margin-right: 30rpx;
     }
+  }
+  scroll-view::-webkit-scrollbar {
+    display: none; /* 隐藏滚动条 */
+    width: 0;
+    height: 0;
+    color: transparent;
   }
 }
 </style>
