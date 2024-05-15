@@ -95,6 +95,14 @@
         "navigationBarTitleText" : "批改详情",
         "navigationStyle": "custom"
       }
+    },
+    {
+      "path" : "pages/publish-homework/index",
+      "style" : 
+      {
+        "navigationBarTitleText" : "发布作业",
+        "navigationStyle": "custom"
+      }
     }
   ],
   "globalStyle": {

@@ -57,27 +57,62 @@ const chartData1 = ref<ECOption>({
   ],
 })
 
-// 轮播图echarts配置
+// 数据统计echarts配置
+const data2 = [[40, 6], [30, 6], [20, 2], [80, 60], [50, 3], [30, 15]]
 const chartData2 = ref<ECOption>({
   legend: {
-    data: ['正确人数', '错误人数'],
+    data: [
+      {
+        name: '正确人数',
+        itemStyle: {
+          color: '#fff',
+          borderWidth: 2,
+          borderColor: '#00a76f',
+        },
+      },
+      {
+        name: '错误人数',
+        itemStyle: {
+          color: '#fff',
+          borderWidth: 2,
+          borderColor: '#fe485f',
+        },
+      },
+    ],
+    textStyle: {
+      color: '#8F9AA8',
+      fontSize: '22rpx',
+    },
     align: 'left',
     bottom: '0%',
     left: 'center',
+    itemWidth: 6,
+    itemHeight: 6,
+    icon: 'circle',
     itemStyle: {
-      borderJoin: 'round',
-      borderCap: 'round',
+      color: '#',
     },
   },
   xAxis: {
     type: 'category',
-    boundaryGap: false,
+    boundaryGap: true,
+    axisTick: {
+      show: false,
+    },
+    nameTextStyle: {
+
+    },
     data: ['第1题', '第2题', '第3题', '第4题', '第5题', '第6题'],
   },
   yAxis: {
     type: 'value',
     axisLabel: {
       formatter: '{value}',
+    },
+    splitLine: {
+      lineStyle: {
+        type: 'dashed',
+      },
     },
   },
   grid: {
@@ -91,10 +126,10 @@ const chartData2 = ref<ECOption>({
     {
       name: '正确人数',
       type: 'bar',
-      barGap: 0,
+      barGap: '0.3',
       color: ['#00A76E'],
       barWidth: '8rpx',
-      data: [[40, 2], [30, 6], [20, 2], [80, 9], [50, 3], [30, 2]].map(item => item[0]),
+      data: data2.map(item => item[0]),
       itemStyle: {
         borderRadius: 20,
       },
@@ -104,7 +139,7 @@ const chartData2 = ref<ECOption>({
       type: 'bar',
       color: ['#FF485E'],
       barWidth: '8rpx',
-      data: [[40, 2], [30, 6], [20, 2], [80, 9], [50, 3], [30, 2]].map(item => item[1]),
+      data: data2.map(item => item[1]),
       itemStyle: {
         borderRadius: 20,
       },
@@ -168,7 +203,7 @@ function handleClickBack() {
         </view>
       </view>
     </view>
-    <view class="transform-translate-y-[-20rpx]">
+    <view class="transform-translate-y-[-25rpx]">
       <!-- 柱状图 -->
       <view class="pb-35rpx pt-50rpx mb-25rpx bg-white rounded-30rpx">
         <view class="px-30rpx flex justify-between items-center">

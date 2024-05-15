@@ -174,7 +174,7 @@ onLoad(() => {
     </view>
     <!-- 中间功能模块 -->
     <view class="px-[30rpx] mb-[30rpx] grid grid-cols-4 gap-y-[30rpx]">
-      <view>
+      <view @tap="handleTo('publish-homework')">
         <view class="mx-auto h-100 w-120">
           <image class="h-full w-full" src="..\..\static\icon\index-setion\section1.png" mode="aspectFill" />
         </view>
