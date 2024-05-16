@@ -25,6 +25,13 @@ function changeHomeworkType(index: number) {
 // 时间
 const time = ref(30)
 function changeTime(num: number) {
+  if (time.value + num <= 0) {
+    uni.showToast({
+      title: `不能低于${time.value}分钟`,
+      icon: 'error',
+    })
+    return
+  }
   time.value += num
 }
 </script>
@@ -52,7 +59,7 @@ function changeTime(num: number) {
             <view class="text-24rpx text-#000333">
               作业名称
             </view>
-            <input class="placeholder-[#000333] text-32rpx text-#8F9AA8" placeholder="请输入作业名称">
+            <input class="placeholder-[#000333] text-32rpx text-#000333" placeholder="请输入作业名称">
           </view>
           <view class="h-107rpx w-126rpx">
             <image class="h-full w-full" src="../../static/icon/publish-homework/publish-homework.png" mode="aspectFill" />

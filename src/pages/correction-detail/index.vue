@@ -3,6 +3,13 @@ import type { ECOption } from '~/widgets/guodu-echarts/echarts'
 
 // 得分率echarts配置
 const chartData1 = ref<ECOption>({
+  grid: {
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    containLabel: true,
+  },
   series: [
     {
       type: 'gauge',
@@ -25,7 +32,7 @@ const chartData1 = ref<ECOption>({
           color: [[0, '#1d8c66'], [100, '#1d8c66']],
         },
       },
-      radius: '40px',
+      radius: '95%',
       axisTick: {
         show: false,
       },
