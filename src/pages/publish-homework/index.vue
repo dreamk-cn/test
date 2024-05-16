@@ -3,6 +3,17 @@
 function handleClickBack() {
   uni.navigateBack()
 }
+// 发布班级
+const showHomeworkClass = ref(false)
+const homeworkClass = [
+  { id: 'class-1', name: '五年级1班数学' },
+  { id: 'class-2', name: '五年级3班数学' },
+  { id: 'class-3', name: '五年级8班数学' },
+  { id: 'class-4', name: '五年级9班数学' },
+]
+function handleHomeworkClass() {
+  showHomeworkClass.value = false
+}
 
 // 作业类型
 const homeworkType = ['基础', '分组', '分层']
@@ -20,6 +31,7 @@ function changeTime(num: number) {
 
 <template>
   <view class="bg-#f5f5f9 min-h-100vh">
+    <!-- 自定义nav-bar -->
     <view class="px-30rpx pb-60rpx bg-#00A76E">
       <custom-nav-bar>
         <template #icon>
@@ -27,7 +39,7 @@ function changeTime(num: number) {
         </template>
         <template #content>
           <view class="text-32rpx font-bold text-white">
-            批改详情
+            发布作业
           </view>
         </template>
       </custom-nav-bar>
@@ -50,7 +62,7 @@ function changeTime(num: number) {
           <view class="text-30rpx text-#000333">
             发布班级
           </view>
-          <view class="flex items-center">
+          <view class="text-right flex gap-15rpx items-center" @tap="showHomeworkClass = true">
             <view class="text-30rpx text-#8F9AA8">
               请选择
             </view>
@@ -86,29 +98,27 @@ function changeTime(num: number) {
           <view class="text-30rpx text-#000333">
             发布时间
           </view>
-          <view class="text-right flex gap-15rpx items-center">
-            <picker>
-              <view class="uni-input">
-                你好
+          <picker>
+            <view class="flex gap-15rpx items-center">
+              <view class="text-30rpx text-#8F9AA8">
+                请选择
               </view>
-            </picker>
-
-            <view class="text-30rpx text-#8F9AA8">
-              2024/5/15
+              <view class="i-carbon-chevron-right text-#B9C1D0" />
             </view>
-            <view class="i-carbon-chevron-right text-#B9C1D0" />
-          </view>
+          </picker>
         </view>
         <view class="pb-35rpx mb-35rpx b-b b-b-#EBEBEB b-b-solid flex justify-between items-center">
           <view class="text-30rpx text-#000333">
             批改结束时间
           </view>
-          <view class="text-right flex gap-15rpx items-center">
-            <view class="text-30rpx text-#8F9AA8">
-              2024/5/15
+          <picker>
+            <view class="flex gap-15rpx items-center">
+              <view class="text-30rpx text-#8F9AA8">
+                请选择
+              </view>
+              <view class="i-carbon-chevron-right text-#B9C1D0" />
             </view>
-            <view class="i-carbon-chevron-right text-#B9C1D0" />
-          </view>
+          </picker>
         </view>
         <view class="flex justify-between items-center">
           <view class="text-30rpx text-#000333">
@@ -134,13 +144,13 @@ function changeTime(num: number) {
           </view>
           <view class="text-right flex gap-48rpx items-center">
             <view class="b-2 b-#ccd0d9 rounded-10rpx b-solid flex-center h-40rpx w-40rpx" @tap="changeTime(-5)">
-              <view class="i-carbon-subtract rouned-30rpx text-#000333" />
+              <view class="i-carbon-subtract text-#000333" />
             </view>
             <view class="text-30rpx font-bold text-#000333">
               {{ time }}
             </view>
             <view class="b-2 b-#ccd0d9 rounded-10rpx b-solid flex-center h-40rpx w-40rpx" @tap="changeTime(5)">
-              <view class="i-carbon-add rouned-30rpx text-#000333" />
+              <view class="i-carbon-add text-#000333" />
             </view>
           </view>
         </view>
@@ -148,12 +158,14 @@ function changeTime(num: number) {
           <view class="text-30rpx text-#000333">
             批改类型
           </view>
-          <view class="text-right flex gap-15rpx items-center">
-            <view class="text-30rpx text-#8F9AA8">
-              批改框
+          <picker>
+            <view class="text-right flex gap-15rpx items-center">
+              <view class="text-30rpx text-#8F9AA8">
+                请选择
+              </view>
+              <view class="i-carbon-chevron-right text-#B9C1D0" />
             </view>
-            <view class="i-carbon-chevron-right text-#B9C1D0" />
-          </view>
+          </picker>
         </view>
         <view class="flex justify-between items-center">
           <view class="text-30rpx text-#000333 flex items-center">
@@ -162,21 +174,24 @@ function changeTime(num: number) {
             </view>
             <view class="i-carbon-help ml-25rpx text-#adb8c8 h-30rpx w-30rpx" />
           </view>
-          <view>
-            <view class="text-30rpx text-#8F9AA8">
-              一人一码(打印作业专用)
+          <picker>
+            <view class="text-right flex gap-15rpx items-center">
+              <view class="text-30rpx text-#8F9AA8">
+                请选择
+              </view>
+              <view class="i-carbon-chevron-right text-#B9C1D0" />
             </view>
-          </view>
+          </picker>
         </view>
       </view>
-      <!-- 设置分数 -->
-      <view class="px-30rpx py-35rpx mb-25rpx bg-white rounded-30rpx">
+      <!-- 设置分数 py比较特殊 -->
+      <view class="px-30rpx py-22rpx mb-25rpx bg-white rounded-30rpx">
         <view class="flex justify-between items-center">
           <view class="text-30rpx text-#000333">
             设置分数
           </view>
-          <view>
-            <switch checked color="#00A76E" class="transform-scale-[0.9]" />
+          <view class="flex-center">
+            <switch checked color="#00A76E" />
           </view>
         </view>
       </view>
@@ -197,6 +212,7 @@ function changeTime(num: number) {
           <view>第3页，共10题</view>
         </view>
       </view>
+      <!-- 题目 -->
       <view class="px-30rpx py-35rpx mb-25rpx bg-white rounded-30rpx">
         <view class="flex justify-between items-center">
           <view class="flex items-center">
@@ -228,5 +244,25 @@ function changeTime(num: number) {
         </view>
       </view>
     </view>
+    <!-- 抽屉 -->
+    <GuoduDrawer
+      :visible="showHomeworkClass"
+      :mask-click="true"
+      mode="bottom"
+      size="40%"
+      :radius="true"
+      @close="handleHomeworkClass"
+    >
+      <template #header>
+        <GuoduDrawerHeader title="请选择班级" @close="showHomeworkClass = false" />
+      </template>
+      <view class="">
+        <checkbox-group class="px-30rpx flex flex-wrap gap-20rpx">
+          <label v-for="item in homeworkClass" :key="item.id">
+            <checkbox :value="item.id" />{{ item.name }}
+          </label>
+        </checkbox-group>
+      </view>
+    </GuoduDrawer>
   </view>
 </template>

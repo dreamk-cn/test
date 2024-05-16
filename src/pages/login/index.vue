@@ -39,11 +39,11 @@ function handleLogin() {
       </view>
       <view class="p-26rpx mx-auto mb-25rpx bg-white rounded-20rpx flex h-90rpx w-650rpx items-center">
         <view class="i-carbon-user-filled text-38rpx text-#96a5b8" />
-        <input v-model="account" class="uni-input placeholder-[#8F9AA8] ml-25rpx text-#8F9AA8 flex-1 h-full" focus placeholder="请输入手机号">
+        <input v-model="account" class="uni-input placeholder-[#8F9AA8] ml-25rpx text-#000333 flex-1 h-full" focus placeholder="请输入手机号">
       </view>
       <view class="p-26rpx mx-auto mb-40rpx bg-white rounded-20rpx flex h-90rpx w-650rpx items-center">
         <view class="i-carbon-phone-block-filled text-38rpx text-#96a5b8" />
-        <input v-model="pwd" class="uni-input placeholder-[#8F9AA8] ml-25rpx text-#8F9AA8 flex-1 h-full" type="password" placeholder="请输入密码">
+        <input v-model="pwd" class="uni-input placeholder-[#8F9AA8] ml-25rpx text-#000333 flex-1 h-full" password type="safe-password" placeholder="请输入密码">
       </view>
       <view class="mb-40rpx bg-#00A76E rounded-20rpx line-height-90rpx text-center text-white h-90rpx w-full" @tap="handleLogin">
         登录
