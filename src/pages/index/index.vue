@@ -2,37 +2,6 @@
 import { Fetch } from '~/utils/fetch'
 import { api } from '~/config/api'
 
-// 自定义头部
-const tops = ref(0)
-const height = ref(0)
-onReady(() => {
-  uni.getSystemInfo({
-    success: (e) => {
-      tops.value = e.statusBarHeight || 0
-      let custom = {
-        top: 0,
-        height: 40,
-      }
-      // #ifndef H5||APP-PLUS
-      custom = uni.getMenuButtonBoundingClientRect()
-      // #endif
-      height.value = custom.height + (custom.top - (e.statusBarHeight || 0)) * 2
-    },
-  })
-})
-
-// 功能快捷入口
-const quickEntryList = [
-  { name: '发布作业', imgUrl: `../../static/icon/index-setion/section1.png`, page: 'publish-homework' },
-  { name: '批改作业', imgUrl: `../../static/icon/index-setion/section2.png`, page: '' },
-  { name: '发布学习计划', imgUrl: `../../static/icon/index-setion/section3.png`, page: '' },
-  { name: '共性错题分析', imgUrl: `../../static/icon/index-setion/section4.png`, page: '' },
-  { name: '离线批改', imgUrl: `../../static/icon/index-setion/section5.png`, page: '' },
-  { name: '学情分析', imgUrl: `../../static/icon/index-setion/section6.png`, page: '' },
-  { name: '挑题组卷', imgUrl: `../../static/icon/index-setion/section7.png`, page: '' },
-  { name: '我的积分', imgUrl: `../../static/icon/index-setion/section8.png`, page: '' },
-]
-
 interface DayList {
   id: string
   day: number
@@ -55,7 +24,51 @@ interface HomeworkList {
   page_size: number
 }
 
-// 选择年月代码逻辑
+// 自定义头部
+const tops = ref(0)
+const height = ref(0)
+onReady(() => {
+  uni.getSystemInfo({
+    success: (e) => {
+      tops.value = e.statusBarHeight || 0
+      let custom = {
+        top: 0,
+        height: 40,
+      }
+      // #ifndef H5||APP-PLUS
+      custom = uni.getMenuButtonBoundingClientRect()
+      // #endif
+      height.value = custom.height + (custom.top - (e.statusBarHeight || 0)) * 2
+    },
+  })
+})
+
+/// / 功能快捷入口
+const quickEntryList = [
+  { name: '发布作业', imgUrl: `../../static/icon/index-setion/section1.png`, page: 'publish-homework' },
+  { name: '批改作业', imgUrl: `../../static/icon/index-setion/section2.png`, page: '' },
+  { name: '发布学习计划', imgUrl: `../../static/icon/index-setion/section3.png`, page: '' },
+  { name: '共性错题分析', imgUrl: `../../static/icon/index-setion/section4.png`, page: '' },
+  { name: '离线批改', imgUrl: `../../static/icon/index-setion/section5.png`, page: '' },
+  { name: '学情分析', imgUrl: `../../static/icon/index-setion/section6.png`, page: '' },
+  { name: '挑题组卷', imgUrl: `../../static/icon/index-setion/section7.png`, page: '' },
+  { name: '我的积分', imgUrl: `../../static/icon/index-setion/section8.png`, page: '' },
+]
+function handleTo(name: string) {
+  if (name === '') {
+    uni.showToast({
+      title: '页面暂未开放',
+      icon: 'error',
+    })
+    return
+  }
+
+  uni.navigateTo({
+    url: `/pages/${name}/index`,
+  })
+}
+
+/// / 选择年月代码逻辑
 function getDate(type: string) {
   const date = new Date()
   let year = date.getFullYear()
@@ -67,20 +80,21 @@ function getDate(type: string) {
   return `${year}/${month > 9 ? month : `0${month}`}`
 }
 const selectDate = ref(getDate(''))
-const startDate = computed(() => getDate('start'))
-const endDate = computed(() => getDate('end'))
 function handleSelectDate(e: { detail: { value: string } }) {
+  // 拆解出年月
   const [year, month] = e.detail.value.split('-')
+  // 更新页面数据
   selectDate.value = `${year}/${month}`
+  // 发送请求
   getDays(year, month)
 }
 
-// 选择选择天代码逻辑
+// 选择选择天代码逻辑 && 获取某天下家庭作业list
 const dayList = ref<Array<DayList>>([])
 const curDay = ref(new Date().getDate() - 1)
-const scrollToDay = ref(`day--1`)
+const scrollToDay = ref('')
 const homeworkList = ref<Array<HomeworkDetail>>([])
-async function handleSelectDay(index: number | undefined) {
+function handleSelectDay(index: number | undefined) {
   // 如果点击的天数没变化，return
   if (curDay.value === index)
     return
@@ -88,14 +102,14 @@ async function handleSelectDay(index: number | undefined) {
   if (typeof index === 'number' && index !== curDay.value)
     curDay.value = index
 
-  // 如果电击的天数下没有作业，清空作业列表&&return
+  // 如果所选的天数下没有作业，清空作业列表&&return
   if (dayList.value[curDay.value].count === 0) {
     homeworkList.value = []
     return
   }
   // 发送请求渲染数据
   uni.showLoading()
-  Fetch<HomeworkList>(api.getHomeworkDetail, { method: 'GET', data: { day: curDay.value + 1, count: dayList.value[curDay.value].count } }).then((data) => {
+  Fetch<HomeworkList>(api.getHomeworkList, { method: 'GET', data: { day: curDay.value + 1, count: dayList.value[curDay.value].count } }).then((data) => {
     homeworkList.value = data.list
     uni.hideLoading()
   }).catch(() => {
@@ -105,11 +119,12 @@ async function handleSelectDay(index: number | undefined) {
   })
 }
 // 获取年/月下的天数及作业数量
-async function getDays(year: string, month: string) {
+function getDays(year: string, month: string) {
   uni.showLoading()
-  Fetch<Array<DayList>>(api.getHomeworkList, { method: 'GET', data: { year, month } }).then((data) => {
+  Fetch<Array<DayList>>(api.getHomeworkDays, { method: 'GET', data: { year, month } }).then((data) => {
     dayList.value = data
     uni.hideLoading()
+    // 获取天下面的作业列表
     handleSelectDay(undefined)
     // dom更新完毕
     nextTick(() => {
@@ -125,18 +140,11 @@ async function getDays(year: string, month: string) {
   })
 }
 
-// 选择班级代码逻辑
+/// / 选择班级代码逻辑（没对接接口）
 const selectClass = ref('全部班级')
 const classList = ref<Array<string>>(['全部班级', '一班', '二班'])
 function handleSelectClass(e: { detail: { value: number } }) {
   selectClass.value = classList.value[e.detail.value]
-}
-
-// 跳转页面
-function handleTo(name: string) {
-  uni.navigateTo({
-    url: `/pages/${name}/index`,
-  })
 }
 
 // 加载页面时获取当前月份的作业
@@ -158,8 +166,8 @@ onLoad(() => {
         </div>
       </div>
       <!-- 选择年月 -->
-      <div class="px-30rpx mb-30rpx flex justify-between items-center">
-        <picker class="h-full" mode="date" :value="selectDate" :start="startDate" :end="endDate" fields="month" @change="handleSelectDate">
+      <div class="flex-between px-30rpx mb-30rpx">
+        <picker class="h-full" mode="date" :value="selectDate" :start="getDate('start')" :end="getDate('end')" fields="month" @change="handleSelectDate">
           <div class="flex relative items-center">
             <text class="text-38 font-bold color-[#000333]">
               {{ selectDate }}
@@ -169,7 +177,7 @@ onLoad(() => {
         </picker>
         <div class="p-x-23rpx bg-[#ffffff66] b b-2px border-[#fff] rounded-18rpx border-solid h-70 w-250 box-border">
           <picker mode="selector" :value="selectClass" :range="classList" @change="handleSelectClass">
-            <div class="flex h-66 justify-between items-center">
+            <div class="flex-between h-66">
               <text class="text-26">
                 {{ selectClass }}
               </text>
@@ -180,7 +188,7 @@ onLoad(() => {
       </div>
       <!-- 选择天 -->
       <div class="mb-30rpx">
-        <scroll-div class="whitespace-nowrap" scroll-x :show-scrollbar="false" :scroll-into-div="scrollToDay" scroll-with-animation>
+        <scroll-view class="whitespace-nowrap" scroll-x :show-scrollbar="false" :scroll-into-view="scrollToDay" scroll-with-animation>
           <div v-for="({ id, day, count }, index) in dayList" :id="`day-${index}`" :key="id" class="day-item px-10rpx inline-block" @tap="handleSelectDay(index)">
             <div :class="[curDay === index ? 'bg-[#00A76E] text-white font-bold' : 'bg-transparent text-[#000333]'] " class="mx-auto rounded-20rpx text-36rpx line-height-66rpx text-center h-66rpx w-66rpx transition-opacity">
               {{ day }}
@@ -190,7 +198,7 @@ onLoad(() => {
               {{ count }}份作业
             </div>
           </div>
-        </scroll-div>
+        </scroll-view>
       </div>
       <div />
     </div>
@@ -208,7 +216,7 @@ onLoad(() => {
     <!-- 底部作业列表模块 -->
     <div class="px-30rpx">
       <div v-for="item in homeworkList" :key="item.id" class="mb-30rpx">
-        <card-homework
+        <shy-card-homework
           :title="item.title" :type="item.type" :status="item.status" :start-time="item.start_time"
           :end-time="item.end_time"
           @tap="handleTo('correction-detail')"
@@ -221,7 +229,7 @@ onLoad(() => {
           <div class="text-22rpx text-[#000333]">
             已批改人数
           </div>
-        </card-homework>
+        </shy-card-homework>
       </div>
       <GuoduEmpty v-show="!homeworkList.length" message="今天没有布置作业" />
     </div>
@@ -238,7 +246,7 @@ onLoad(() => {
       padding-right: 30rpx;
     }
   }
-  scroll-div::-webkit-scrollbar {
+  scroll-view::-webkit-scrollbar {
     display: none; /* 隐藏滚动条 */
     width: 0;
     height: 0;
