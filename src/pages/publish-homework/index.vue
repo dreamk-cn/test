@@ -4,24 +4,27 @@ function handleClickBack() {
   uni.navigateBack()
 }
 
-// 发布班级
+/// / 发布班级
 const showHomeworkClass = ref(false)
-const homeworkClass = [
-  { id: 'class-1', name: '五年级1班数学' },
-  { id: 'class-2', name: '五年级3班数学' },
-]
+const rawHomeworkClass = [{ id: 'class-1', name: '五年级1班数学' }, { id: 'class-2', name: '五年级3班数学' }, { id: 'class-4', name: '五年级6班数学' }]
+const homeworkClass = ref(rawHomeworkClass.map((item) => {
+  return { ...item, checked: false }
+}))
+// 存储选中的班级id
 const selectedHomeworkClass = ref<Array<string>>([])
-// 关闭选择班级抽屉
-function handleCloseHomeworkClass() {
-  showHomeworkClass.value = false
-}
-
 // 选择班级事件
 function handleSelectHomeworkClass(e: { detail: { value: Array<string> } }) {
   selectedHomeworkClass.value = e.detail.value
+  homeworkClass.value.forEach((item, index) => {
+    if (selectedHomeworkClass.value.includes(item.id))
+      homeworkClass.value[index].checked = true
+    else
+      homeworkClass.value[index].checked = false
+  })
 }
-const selectedHomeworkClassContent = computed(() => {
-  return homeworkClass.filter(item => selectedHomeworkClass.value.includes(item.id)).map((item) => {
+// 通过选择的id列表过滤出对应的name，方便展示
+const selectedHomeworkClassMessage = computed(() => {
+  return homeworkClass.value.filter(item => selectedHomeworkClass.value.includes(item.id)).map((item) => {
     return item.name
   })
 })
@@ -68,9 +71,25 @@ function handleSelectEndTime(e: { detail: { value: string } }) {
   endTime.value = e.detail.value
 }
 
+/// / 设置成绩
+const isScore = ref(false)
+function handleSetScore(e: { detail: { value: boolean } }) {
+  isScore.value = e.detail.value
+}
+
 // 批改类型 && 铺码方式
 const correctionType = ref(-1)
 const codingMethod = ref(-1)
+function handleChangeCorrectionType(e: { detail: { value: number } }) {
+  correctionType.value = e.detail.value
+  if (correctionType.value === 0)
+    codingMethod.value = 0
+  else
+    codingMethod.value = 1
+}
+function handleChangeCodingMethod(e: { detail: { value: number } }) {
+  codingMethod.value = e.detail.value
+}
 const correctionTypeMessage = computed(() => {
   if (correctionType.value === -1)
     return '请选择'
@@ -79,7 +98,6 @@ const correctionTypeMessage = computed(() => {
   else
     return '采集卡批改'
 })
-
 const codingMethodMessage = computed(() => {
   if (codingMethod.value === -1)
     return '请选择'
@@ -88,6 +106,21 @@ const codingMethodMessage = computed(() => {
   else
     return '一人一码(打印作业专用)'
 })
+
+/// / 发布作业
+function handlePublishHomework() {
+  uni.showModal({
+    title: '提示',
+    content: `
+      class-id:${selectedHomeworkClass.value};
+      homework-type:${curHomeworkType.value};
+      start-time:${startTime.value};
+      end-time:${endTime.value};
+      issetScore:${isScore.value};
+      
+    `,
+  })
+}
 </script>
 
 <template>
@@ -124,38 +157,13 @@ const codingMethodMessage = computed(() => {
             发布班级
           </view>
           <view class="text-right flex gap-15rpx items-center" @tap="showHomeworkClass = true">
-            <view v-for="(item, index) in selectedHomeworkClassContent" :key="index" class="px-18rpx py-12rpx bg-#E2F8F0 rounded-30rpx text-22rpx text-#00A76E">
+            <view v-for="(item, index) in selectedHomeworkClassMessage" :key="index" class="px-18rpx py-12rpx bg-#E2F8F0 rounded-30rpx text-22rpx text-#00A76E">
               {{ item }}
             </view>
-            <view v-if="selectedHomeworkClass.length === 0" class="text-30rpx text-#8F9AA8">
+            <view v-show="selectedHomeworkClass.length === 0" class="text-30rpx text-#8F9AA8">
               请选择
             </view>
-            <view v-else class="text-24rpx text-#000333">
-              {{ (selectedHomeworkClass.length > 2 ? `等${selectedHomeworkClass.length}个班级` : `${selectedHomeworkClass.length}个班级`) }}
-            </view>
             <view class="i-carbon-chevron-right text-#B9C1D0" />
-          </view>
-        </view>
-      </view>
-      <!-- 发布班级 -->
-      <view class="px-30rpx py-35rpx mb-25rpx bg-white rounded-30rpx">
-        <view class="flex justify-between items-center">
-          <view class="text-30rpx text-#000333">
-            发布班级
-          </view>
-          <view class="text-right flex gap-15rpx items-center">
-            <view v-for="(item, index) in selectedHomeworkClassContent" :key="index" class="px-18rpx py-12rpx bg-#E2F8F0 rounded-30rpx text-22rpx text-#00A76E">
-              {{ item }}
-            </view>
-            <view class="flex gap-15rpx items-center">
-              <view v-if="selectedHomeworkClass.length === 0" class="text-30rpx text-#8F9AA8">
-                上面的
-              </view>
-              <view v-else class="text-24rpx text-#000333">
-                {{ (selectedHomeworkClass.length > 2 ? `等${selectedHomeworkClass.length}个班级` : `${selectedHomeworkClass.length}个班级`) }}
-              </view>
-              <view class="i-carbon-chevron-right text-#B9C1D0" />
-            </view>
           </view>
         </view>
       </view>
@@ -225,7 +233,7 @@ const codingMethodMessage = computed(() => {
           <view class="text-30rpx text-#000333">
             批改类型
           </view>
-          <picker :range="['批改框批改', '采集卡批改']">
+          <picker :range="['批改框批改', '采集卡批改']" :value="correctionType" @change="handleChangeCorrectionType">
             <view class="text-right flex gap-15rpx items-center">
               <view class="text-30rpx text-#8F9AA8">
                 {{ correctionTypeMessage }}
@@ -241,7 +249,7 @@ const codingMethodMessage = computed(() => {
             </view>
             <view class="i-carbon-help ml-25rpx text-#adb8c8 h-30rpx w-30rpx" />
           </view>
-          <picker :range="['整班铺码(印刷教辅专用)', '一人一码(打印作业专用)']">
+          <picker :range="['整班铺码(印刷教辅专用)', '一人一码(打印作业专用)']" :disabled="correctionType === 1" @change="handleChangeCodingMethod">
             <view class="text-right flex gap-15rpx items-center">
               <view class="text-30rpx text-#8F9AA8">
                 {{ codingMethodMessage }}
@@ -258,7 +266,7 @@ const codingMethodMessage = computed(() => {
             设置分数
           </view>
           <view class="flex-center">
-            <switch checked color="#00A76E" />
+            <switch color="#00A76E" :checked="isScore" @change="handleSetScore" />
           </view>
         </view>
       </view>
@@ -303,7 +311,7 @@ const codingMethodMessage = computed(() => {
             添加作业
           </view>
         </view>
-        <view class="bg-#00A76E rounded-20rpx flex-center h-100rpx w-320rpx">
+        <view class="bg-#00A76E rounded-20rpx flex-center h-100rpx w-320rpx" @tap="handlePublishHomework()">
           <view class="i-carbon-send-alt-filled mr-14rpx text-32rpx text-#ffffff" />
           <view class="text-34rpx text-#ffffff">
             发布作业
@@ -318,15 +326,15 @@ const codingMethodMessage = computed(() => {
       mode="bottom"
       size="40%"
       :radius="true"
-      @close="handleCloseHomeworkClass"
+      @close="showHomeworkClass = false"
     >
       <template #header>
-        <GuoduDrawerHeader title="请选择班级" @close="showHomeworkClass = false" />
+        <GuoduDrawerHeader class="bg-#f5f5f9 rounded-20rpx" title="请选择班级" @close="showHomeworkClass = false" />
       </template>
-      <view class="">
-        <checkbox-group class="px-30rpx flex flex-wrap gap-20rpx" @change="handleSelectHomeworkClass">
-          <label v-for="item in homeworkClass" :key="item.id">
-            <checkbox color="#00a76e" :value="item.id" />{{ item.name }}
+      <view class="bg-#f5f5f9 h-full">
+        <checkbox-group class="px-30rpx text-center text-#000333 grid grid-cols-2 gap-20rpx" @change="handleSelectHomeworkClass">
+          <label v-for="item in homeworkClass" :key="item.id" class="p-20rpx bg-white rounded-15rpx text-32rpx flex items-center">
+            <checkbox color="#00a76e" :value="item.id" :checked="item.checked" />{{ item.name }}
           </label>
         </checkbox-group>
       </view>
