@@ -24,6 +24,20 @@ interface HomeworkList {
   page_size: number
 }
 
+function handleTo(name: string) {
+  if (name === '') {
+    uni.showToast({
+      title: '页面暂未开放',
+      icon: 'error',
+    })
+    return
+  }
+
+  uni.navigateTo({
+    url: `/pages/${name}/index`,
+  })
+}
+
 // 自定义头部
 const tops = ref(0)
 const height = ref(0)
@@ -42,31 +56,6 @@ onReady(() => {
     },
   })
 })
-
-/// / 功能快捷入口
-const quickEntryList = [
-  { name: '发布作业', imgUrl: `../../static/icon/index-setion/section1.png`, page: 'publish-homework' },
-  { name: '批改作业', imgUrl: `../../static/icon/index-setion/section2.png`, page: '' },
-  { name: '发布学习计划', imgUrl: `../../static/icon/index-setion/section3.png`, page: '' },
-  { name: '共性错题分析', imgUrl: `../../static/icon/index-setion/section4.png`, page: '' },
-  { name: '离线批改', imgUrl: `../../static/icon/index-setion/section5.png`, page: '' },
-  { name: '学情分析', imgUrl: `../../static/icon/index-setion/section6.png`, page: '' },
-  { name: '挑题组卷', imgUrl: `../../static/icon/index-setion/section7.png`, page: '' },
-  { name: '我的积分', imgUrl: `../../static/icon/index-setion/section8.png`, page: '' },
-]
-function handleTo(name: string) {
-  if (name === '') {
-    uni.showToast({
-      title: '页面暂未开放',
-      icon: 'error',
-    })
-    return
-  }
-
-  uni.navigateTo({
-    url: `/pages/${name}/index`,
-  })
-}
 
 /// / 选择年月代码逻辑
 function getDate(type: string) {
@@ -200,19 +189,9 @@ onLoad(() => {
           </div>
         </scroll-view>
       </div>
-      <div />
     </div>
     <!-- 中间功能模块 -->
-    <div class="px-30rpx mb-30rpx grid grid-cols-4 gap-y-30rpx">
-      <div v-for="(item, index) in quickEntryList" :key="index" @tap="handleTo(item.page)">
-        <div class="mx-auto h-100 w-120">
-          <image class="h-full w-full" :src="item.imgUrl" mode="aspectFill" />
-        </div>
-        <div class="mt-17rpx text-22rpx text-center text-[#000333]">
-          {{ item.name }}
-        </div>
-      </div>
-    </div>
+    <shy-quick-entry class="px-30rpx mb-30rpx" />
     <!-- 底部作业列表模块 -->
     <div class="px-30rpx">
       <div v-for="item in homeworkList" :key="item.id" class="mb-30rpx">
@@ -233,6 +212,7 @@ onLoad(() => {
       </div>
       <GuoduEmpty v-show="!homeworkList.length" message="今天没有布置作业" />
     </div>
+    <div class="h-40" />
   </div>
 </template>
 
