@@ -23,6 +23,7 @@ export default {
     {
       'flex-center': 'flex justify-center items-center',
       'flex-left': 'flex justify-start items-center',
+      'flex-between': 'flex justify-between items-center',
     },
   ],
 

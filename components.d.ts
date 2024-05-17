@@ -7,8 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    CardHomework: typeof import('./src/components/card-homework/card-homework.vue')['default']
-    CustomNavBar: typeof import('./src/components/custom-nav-bar/custom-nav-bar.vue')['default']
     GuoduCalendar: typeof import('./src/widgets/guodu-calendar/guodu-calendar.vue')['default']
     GuoduColorPicker: typeof import('./src/widgets/guodu-color-picker/guodu-color-picker.vue')['default']
     GuoduDrawer: typeof import('./src/widgets/guodu-drawer/guodu-drawer.vue')['default']
@@ -20,6 +18,10 @@ declare module 'vue' {
     GuoduNavBar: typeof import('./src/widgets/guodu-nav-bar/guodu-nav-bar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ShyCardCorrectiondDetails: typeof import('./src/components/shy-card-correctiond-details/shy-card-correctiond-details.vue')['default']
+    ShyCardHomework: typeof import('./src/components/shy-card-homework/shy-card-homework.vue')['default']
+    ShyCardScoreRateHead: typeof import('./src/components/shy-card-score-rate-head/shy-card-score-rate-head.vue')['default']
+    ShyCustomNavBar: typeof import('./src/components/shy-custom-nav-bar/shy-custom-nav-bar.vue')['default']
     ShyLoadMore: typeof import('./src/components/shy-load-more/shy-load-more.vue')['default']
   }
 }
