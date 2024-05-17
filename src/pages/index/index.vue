@@ -238,9 +238,18 @@ onLoad(() => {
       <view v-for="item in homeworkList" :key="item.id" class="mb-30rpx">
         <card-homework
           :title="item.title" :type="item.type" :status="item.status" :start-time="item.start_time"
-          :end-time="item.end_time" :total="item.total" :done="item.done"
+          :end-time="item.end_time"
           @tap="handleTo('correction-detail')"
-        />
+        >
+          <view class="mb-10rpx text-26rpx font-bold text-[#000333]">
+            <text class="text-36rpx text-[#00A76E]">
+              {{ item.done }}
+            </text>/{{ item.total }}
+          </view>
+          <view class="text-22rpx text-[#000333]">
+            已批改人数
+          </view>
+        </card-homework>
       </view>
       <GuoduEmpty v-show="!homeworkList.length" message="今天没有布置作业" />
     </view>

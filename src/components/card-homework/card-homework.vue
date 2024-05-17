@@ -1,47 +1,37 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
   title?: string
-  type?: number
-  status?: number
+  type?: 1 | 2 | 3
+  status?: 1 | 2 | 3
   startTime?: number
   endTime?: number
-  total?: number
-  done?: number
 }>(), {
   title: '标题',
-  type: 0,
+  type: 1,
   status: 3,
   startTime: new Date().getTime() / 1000,
   endTime: (new Date().getTime() + 24 * 60 * 60 * 1000) / 1000,
-  total: Math.floor(Math.random() * 100) + 1,
-  done: Math.floor(Math.random() * 10) + 1,
 })
-// const emits = defineEmits(['more'])
 
-// 计算status
-const statusMessage = computed(() => {
-  if (props.status === 1)
-    return '已批改'
-  else if (props.status === 2)
-    return '未批改'
-  else
-    return '待批改'
-})
-const statusStyle = computed(() => {
-  if (props.status === 1)
-    return 'i-carbon-checkmark text-green'
-  else if (props.status === 2)
-    return 'i-carbon-help-filled text-yellow'
-  else
-    return 'i-carbon-hourglass text-[#8ca0c6]'
-})
+// 状态映射对象
+const statusMap = {
+  1: { message: '已批改', styleClass: 'i-carbon-checkmark text-green' },
+  2: { message: '未批改', styleClass: 'i-carbon-help-filled text-yellow' },
+  3: { message: '待批改', styleClass: 'i-carbon-hourglass text-[#8ca0c6]' },
+}
+
+// 使用映射对象计算status的message和style
+const statusMessage = computed(() => statusMap[props.status]?.message || '未知内容')
+const statusStyle = computed(() => statusMap[props.status]?.styleClass || '未知样式')
 
 // 计算type
 const typeMessage = computed(() => {
   if (props.type === 1)
     return '基础'
+  else if (props.type === 2)
+    return '分组'
   else
-    return '标准'
+    return '分层'
 })
 </script>
 
@@ -83,14 +73,7 @@ const typeMessage = computed(() => {
     </view>
     <view class="flex justify-between items-center">
       <view>
-        <view class="mb-10rpx text-26rpx font-bold text-[#000333]">
-          <text class="text-36rpx text-[#00A76E]">
-            {{ done }}
-          </text>/{{ total }}
-        </view>
-        <view class="text-22rpx text-[#000333]">
-          已批改人数
-        </view>
+        <slot />
       </view>
       <view class="flex">
         <view class="bg-white b b-1 border-[#C9CED9] rounded-33rpx border-solid text-26rpx text-[#000333] flex-center h-66rpx w-170rpx">
