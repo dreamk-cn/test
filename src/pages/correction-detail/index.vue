@@ -48,7 +48,7 @@ const chartData1 = ref<ECOption>({
       detail: {
         show: true,
         valueAnimation: true,
-        fontSize: '14',
+        fontSize: '18',
         offsetCenter: ['0%', '0%'],
         color: 'white',
         formatter(value) {
@@ -65,7 +65,7 @@ const chartData1 = ref<ECOption>({
 })
 
 // 数据统计echarts配置
-const data2 = [[40, 6], [30, 6], [20, 2], [80, 60], [50, 3], [30, 15]]
+const data2 = [[40, 6], [30, 6], [50, 16], [80, 60], [50, 3], [30, 15]]
 const chartData2 = ref<ECOption>({
   legend: {
     data: [
@@ -88,10 +88,10 @@ const chartData2 = ref<ECOption>({
     ],
     textStyle: {
       color: '#8F9AA8',
-      fontSize: '14',
+      fontSize: '13',
     },
     align: 'left',
-    bottom: '0%',
+    bottom: '-2%',
     left: 'center',
     itemWidth: 6,
     itemHeight: 6,
@@ -123,8 +123,8 @@ const chartData2 = ref<ECOption>({
     },
   },
   grid: {
-    left: 30,
-    right: 35,
+    left: 0,
+    right: 0,
     top: 20,
     bottom: 30,
     containLabel: true,
@@ -159,7 +159,7 @@ const curTab = ref(0)
 </script>
 
 <template>
-  <view class="bg-[#f5f5f9]">
+  <view class="bg-white">
     <view class="px-30rpx pb-70rpx pt-40rpx bg-[#00A76E] color-white w-750rpx">
       <view class="mb-20rpx flex items-center">
         <view class="mr-20rpx text-32rpx font-bold text-white">
@@ -193,30 +193,32 @@ const curTab = ref(0)
         </view>
       </view>
     </view>
-    <view class="transform-translate-y--25rpx">
+    <view class="bg-[#f5f5f9] rounded-30rpx transform-translate-y--25rpx">
       <!-- 柱状图 -->
-      <view class="pb-35rpx pt-50rpx mb-25rpx bg-white rounded-30rpx">
-        <view class="px-30rpx flex justify-between items-center">
-          <view class="text-30rpx font-bold text-[#000333]">
-            数据统计
+      <shy-card-correctiond-details class="mb-25rpx">
+        <template #header>
+          <view class="py-10rpx flex justify-between items-center">
+            <view class="text-30rpx font-bold text-[#000333]">
+              数据统计
+            </view>
+            <view class="text-22rpx text-[#8F9AA8]">
+              左右滑动可查看更多数据~
+            </view>
           </view>
-          <view class="text-22rpx text-[#8F9AA8]">
-            左右滑动可查看更多数据~
-          </view>
-        </view>
+        </template>
         <view class="h-430rpx w-full">
           <GuoduEcharts
             :options="chartData2" canvas-id="chartData2"
           />
         </view>
-      </view>
+      </shy-card-correctiond-details>
       <!-- 最高得分率 -->
       <shy-card-correctiond-details class="mb-25rpx">
         <template #header>
           <shy-card-score-rate-head title="最高得分率" accuracy="80%" :color-type="1" />
         </template>
         <view class="grid grid-cols-3 gap-150rpx gap-y-40rpx">
-          <view v-for="item in 2" :key="item" class="flex items-center">
+          <view v-for="item in 4" :key="item" class="flex items-center">
             <view class="i-carbon-user-filled text-27rpx text-#A9BCD3" />
             <view class="ml-18rpx text-28rpx text-#465A7B">
               小陈{{ item }}
@@ -240,7 +242,7 @@ const curTab = ref(0)
       </shy-card-correctiond-details>
       <!-- 批改状态 -->
       <view class="px-30rpx pb-100rpx pt-35rpx bg-white rounded-30rpx rounded-b-none">
-        <view class="mb-40rpx flex gap-40rpx items-center">
+        <view class="mb-20rpx flex gap-40rpx items-center">
           <view v-for="(item, index) in tabs" :key="item" class="text-28rpx font-bold transition-opacity" :class="[curTab === index ? 'text-#00A76E' : '']" @click="curTab = index">
             {{ item }}
             <view class="mx-auto mt-15rpx bg-#00A76E rounded-3rpx h-6rpx w-80% transition-opacity" :class="[curTab === index ? '' : 'opacity-0']" />
