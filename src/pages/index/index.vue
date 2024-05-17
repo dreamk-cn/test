@@ -60,13 +60,17 @@ function handleSelectDate(e: { detail: { value: string } }) {
 // 选择选择天代码逻辑
 const dayList = ref<Array<DayList>>([])
 const curDay = ref(new Date().getDate() - 1)
+const scrollToDay = ref(`day--1`)
 const homeworkList = ref<Array<HomeworkDetail>>([])
 async function handleSelectDay(index: number | undefined) {
+  // 如果点击的天数没变化，return
   if (curDay.value === index)
     return
+  // 如果点击的天数不同，赋值
   if (typeof index === 'number' && index !== curDay.value)
     curDay.value = index
 
+  // 如果电击的天数下没有作业，清空作业列表&&return
   if (dayList.value[curDay.value].count === 0) {
     homeworkList.value = []
     return
@@ -86,10 +90,16 @@ async function handleSelectDay(index: number | undefined) {
 async function getDays(year: string, month: string) {
   uni.showLoading()
   Fetch<Array<DayList>>(api.getHomeworkList, { method: 'GET', data: { year, month } }).then((data) => {
-    curDay.value = 0
     dayList.value = data
     uni.hideLoading()
     handleSelectDay(undefined)
+    // dom更新完毕
+    nextTick(() => {
+      const curMonth = new Date().getMonth() + 1
+      if (curMonth !== Number(month))
+        curDay.value = 0
+      scrollToDay.value = `day-${curDay.value}`
+    })
   }).catch(() => {
     uni.showToast({
       title: `获取${selectDate.value}下的天数失败`,
@@ -152,8 +162,8 @@ onLoad(() => {
       </view>
       <!-- 选择天 -->
       <view class="mb-30rpx">
-        <scroll-view class="whitespace-nowrap" scroll-x :show-scrollbar="false">
-          <view v-for="({ id, day, count }, index) in dayList" :key="id" class="day-item mx-10rpx inline-block" @tap="handleSelectDay(index)">
+        <scroll-view class="whitespace-nowrap" scroll-x :show-scrollbar="false" :scroll-into-view="scrollToDay">
+          <view v-for="({ id, day, count }, index) in dayList" :id="`day-${index}`" :key="id" class="day-item mx-10rpx inline-block" @tap="handleSelectDay(index)">
             <view :class="[curDay === index ? 'bg-[#00A76E] text-white font-bold' : 'bg-transparent text-[#000333]'] " class="mx-auto rounded-20rpx text-36rpx line-height-66rpx text-center h-66rpx w-66rpx transition-opacity">
               {{ day }}
             </view>
