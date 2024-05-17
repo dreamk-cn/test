@@ -9,7 +9,13 @@ onReady(() => {
   uni.getSystemInfo({
     success: (e) => {
       tops.value = e.statusBarHeight || 0
-      const custom = uni.getMenuButtonBoundingClientRect()
+      let custom = {
+        top: 0,
+        height: 40,
+      }
+      // #ifndef H5||APP-PLUS
+      custom = uni.getMenuButtonBoundingClientRect()
+      // #endif
       height.value = custom.height + (custom.top - (e.statusBarHeight || 0)) * 2
     },
   })
@@ -162,8 +168,8 @@ onLoad(() => {
       </view>
       <!-- 选择天 -->
       <view class="mb-30rpx">
-        <scroll-view class="whitespace-nowrap" scroll-x :show-scrollbar="false" :scroll-into-view="scrollToDay">
-          <view v-for="({ id, day, count }, index) in dayList" :id="`day-${index}`" :key="id" class="day-item mx-10rpx inline-block" @tap="handleSelectDay(index)">
+        <scroll-view class="whitespace-nowrap" scroll-x :show-scrollbar="false" :scroll-into-view="scrollToDay" scroll-with-animation>
+          <view v-for="({ id, day, count }, index) in dayList" :id="`day-${index}`" :key="id" class="day-item px-10rpx inline-block" @tap="handleSelectDay(index)">
             <view :class="[curDay === index ? 'bg-[#00A76E] text-white font-bold' : 'bg-transparent text-[#000333]'] " class="mx-auto rounded-20rpx text-36rpx line-height-66rpx text-center h-66rpx w-66rpx transition-opacity">
               {{ day }}
             </view>
@@ -270,10 +276,10 @@ onLoad(() => {
 .page-index {
   .day-item {
     &:first-child {
-      margin-left: 30rpx;
+      padding-left: 30rpx;
     }
     &:last-child {
-      margin-right: 30rpx;
+      padding-right: 30rpx;
     }
   }
   scroll-view::-webkit-scrollbar {
