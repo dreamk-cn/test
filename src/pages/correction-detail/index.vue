@@ -156,28 +156,11 @@ const chartData2 = ref<ECOption>({
 
 const tabs = ref(['有错', '全对', '部分批改', '未批改'])
 const curTab = ref(0)
-
-// 返回上一页
-function handleClickBack() {
-  uni.navigateBack()
-}
 </script>
 
 <template>
   <view class="bg-[#f5f5f9]">
-    <view class="px-30rpx bg-[#00A76E] color-white h-540rpx w-750rpx">
-      <view class="mb-40rpx">
-        <custom-nav-bar>
-          <template #icon>
-            <view class="i-carbon-chevron-left h-35rpx w-35rpx" @tap="handleClickBack" />
-          </template>
-          <template #content>
-            <view class="text-32rpx font-bold text-white">
-              批改详情
-            </view>
-          </template>
-        </custom-nav-bar>
-      </view>
+    <view class="px-30rpx pb-70rpx pt-40rpx bg-[#00A76E] color-white w-750rpx">
       <view class="mb-20rpx flex items-center">
         <view class="mr-20rpx text-32rpx font-bold text-white">
           10/07·初中数学
@@ -228,16 +211,10 @@ function handleClickBack() {
         </view>
       </view>
       <!-- 最高得分率 -->
-      <view class="px-30rpx pb-35rpx pt-35rpx mb-25rpx bg-white rounded-30rpx">
-        <view class="mb-35rpx flex justify-between items-center">
-          <view class="text-30rpx font-bold text-[#000333]">
-            最高得分率
-          </view>
-          <view class="text-38rpx font-bold text-#00A76E relative">
-            75%
-            <view class="bg-#E7F3EF absolute h-6rpx bottom-4rpx left-0 right-0" />
-          </view>
-        </view>
+      <shy-card-correctiond-details class="mb-25rpx">
+        <template #header>
+          <shy-card-score-rate-head title="最高得分率" accuracy="80%" :color-type="1" />
+        </template>
         <view class="grid grid-cols-3 gap-150rpx gap-y-40rpx">
           <view v-for="item in 2" :key="item" class="flex items-center">
             <view class="i-carbon-user-filled text-27rpx text-#A9BCD3" />
@@ -246,27 +223,21 @@ function handleClickBack() {
             </view>
           </view>
         </view>
-      </view>
+      </shy-card-correctiond-details>
       <!-- 最低得分率 -->
-      <view class="px-30rpx pb-35rpx pt-35rpx mb-25rpx bg-white rounded-30rpx">
-        <view class="mb-35rpx flex justify-between items-center">
-          <view class="text-30rpx font-bold text-[#000333]">
-            最低得分率
-          </view>
-          <view class="text-38rpx font-bold text-#FC5260 relative">
-            35%
-            <view class="bg-#F6E6E8 absolute h-6rpx bottom-4rpx left-0 right-0" />
-          </view>
-        </view>
+      <shy-card-correctiond-details class="mb-25rpx">
+        <template #header>
+          <shy-card-score-rate-head title="最底得分率" accuracy="35%" :color-type="2" />
+        </template>
         <view class="grid grid-cols-3 gap-150rpx gap-y-40rpx">
-          <view v-for="item in 3" :key="item" class="flex items-center">
+          <view v-for="item in 2" :key="item" class="flex items-center">
             <view class="i-carbon-user-filled text-27rpx text-#A9BCD3" />
             <view class="ml-18rpx text-28rpx text-#465A7B">
               小陈{{ item }}
             </view>
           </view>
         </view>
-      </view>
+      </shy-card-correctiond-details>
       <!-- 批改状态 -->
       <view class="px-30rpx pb-100rpx pt-35rpx bg-white rounded-30rpx rounded-b-none">
         <view class="mb-40rpx flex gap-40rpx items-center">
