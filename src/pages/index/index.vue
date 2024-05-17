@@ -37,8 +37,6 @@ interface HomeworkList {
   page_size: number
 }
 
-const loading = ref(false)
-
 // 选择年月代码逻辑
 function getDate(type: string) {
   const date = new Date()
@@ -74,10 +72,10 @@ async function handleSelectDay(index: number | undefined) {
     return
   }
   // 发送请求渲染数据
-  loading.value = true
+  uni.showLoading()
   Fetch<HomeworkList>(api.getHomeworkDetail, { method: 'GET', data: { day: curDay.value + 1, count: dayList.value[curDay.value].count } }).then((data) => {
     homeworkList.value = data.list
-    loading.value = false
+    uni.hideLoading()
   }).catch(() => {
     uni.showToast({
       title: `获取${selectDate.value}下的天数失败`,
@@ -86,11 +84,11 @@ async function handleSelectDay(index: number | undefined) {
 }
 // 获取年/月下的天数及作业数量
 async function getDays(year: string, month: string) {
-  loading.value = true
+  uni.showLoading()
   Fetch<Array<DayList>>(api.getHomeworkList, { method: 'GET', data: { year, month } }).then((data) => {
     curDay.value = 0
     dayList.value = data
-    loading.value = false
+    uni.hideLoading()
     handleSelectDay(undefined)
   }).catch(() => {
     uni.showToast({
@@ -122,10 +120,6 @@ onLoad(() => {
 
 <template>
   <view class="page-index top-bg pb-30rpx bg-[#f5f5f9] relative min-h-100vh">
-    <!-- 遮罩层 -->
-    <view v-show="loading" class="bg-[#0000000d] flex-center fixed h-100vh w-100vw overflow-y-scroll bottom-0 left-0 right-0 top-0 z-10">
-      <GuoduLoading type="dot-circle" class="m-3" />
-    </view>
     <!-- 顶部日期部分 -->
     <view>
       <!-- 自定义头部导航栏 -->
