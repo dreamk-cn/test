@@ -173,7 +173,7 @@ function handlePublishHomework() {
           <view class="text-30rpx text-#000333">
             发布时间
           </view>
-          <picker v-model="startTime" mode="date" :start="getDate('start')" :end="getDate('end')" @change="handleSelectStartTime">
+          <picker :value="startTime" mode="date" :start="getDate('start')" :end="getDate('end')" @change="handleSelectStartTime">
             <view class="flex gap-15rpx items-center">
               <view class="text-30rpx text-#8F9AA8">
                 {{ startTime }}
@@ -186,7 +186,7 @@ function handlePublishHomework() {
           <view class="text-30rpx text-#000333">
             批改结束时间
           </view>
-          <picker v-model="endTime" mode="date" :start="getDate('start')" :end="getDate('end')" @change="handleSelectEndTime">
+          <picker :value="endTime" mode="date" :start="getDate('start')" :end="getDate('end')" @change="handleSelectEndTime">
             <view class="flex gap-15rpx items-center">
               <view class="text-30rpx text-#8F9AA8">
                 {{ endTime }}
