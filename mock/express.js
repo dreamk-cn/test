@@ -4,6 +4,7 @@ const crypto = require('node:crypto')
 const { type } = require('node:os')
 const bodyParser = require('body-parser')
 const express = require('express')
+const { number } = require('echarts')
 
 const app = express()
 app.use(bodyParser())
@@ -265,7 +266,7 @@ app.get('/api/user/list', (req, res) => {
 })
 
 // 根据年月返回相应的作业分布
-app.get('/api/homework/list', (req, res) => {
+app.get('/api/homework/days', (req, res) => {
   const year = req.query.year ?? 1
   const month = req.query.month ?? 10
   const daysInMonth = new Date(year, month + 1, 0).getDate()
@@ -280,24 +281,24 @@ app.get('/api/homework/list', (req, res) => {
   setTimeout(() => {
     res.send({
       code: 0,
-      message: '获取成功！',
+      msg: '获取成功！',
       data: result,
     })
   }, 500)
 })
 
 // 根据日期获取作业列表
-app.get('/api/homework/detail', (req, res) => {
+app.get('/api/homework/list', (req, res) => {
   const day = req.query.day
   const count = req.query.count
   if (!day || !count) {
     res.send({
       code: -1,
-      message: '参数不对',
+      msg: '参数不对',
     })
   }
   const result = {
-    count,
+    count: Number.parseInt(count),
     page_no: '1',
     page_size: '10',
     list: [],
@@ -319,7 +320,7 @@ app.get('/api/homework/detail', (req, res) => {
   setTimeout(() => {
     res.send({
       code: 0,
-      message: '获取成功！',
+      msg: '获取成功！',
       data: result,
     })
   }, 1000)
