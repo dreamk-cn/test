@@ -2,12 +2,12 @@
 import { Fetch } from '~/utils/fetch'
 import { api } from '~/config/api'
 
-interface DayList {
+interface DayType {
   id: string
   day: number
   count: number
 }
-interface HomeworkDetail {
+interface HomeworkDetailType {
   id: string
   type: number
   total: number
@@ -16,26 +16,6 @@ interface HomeworkDetail {
   start_time: number
   end_time: number
   done: number
-}
-interface HomeworkList {
-  count: number
-  list: Array<HomeworkDetail>
-  page_no: number
-  page_size: number
-}
-
-function handleTo(name: string) {
-  if (name === '') {
-    uni.showToast({
-      title: '页面暂未开放',
-      icon: 'error',
-    })
-    return
-  }
-
-  uni.navigateTo({
-    url: `/pages/${name}/index`,
-  })
 }
 
 // 自定义头部
@@ -74,55 +54,61 @@ function handleSelectDate(e: { detail: { value: string } }) {
   const [year, month] = e.detail.value.split('-')
   // 更新页面数据
   selectDate.value = `${year}/${month}`
-  // 发送请求
-  getDays(year, month)
 }
 
 // 选择选择天代码逻辑 && 获取某天下家庭作业list
-const dayList = ref<Array<DayList>>([])
-const curDay = ref(new Date().getDate() - 1)
+const { list: homeworkList, isLoading, isLoadAll, load, clear, next } = useFetchPage<HomeworkDetailType>(api.getHomeworkList)
+const dayList = ref<Array<DayType>>([])
+const curDay = ref(0)
 const scrollToDay = ref('')
-const homeworkList = ref<Array<HomeworkDetail>>([])
-function handleSelectDay(index: number | undefined) {
-  // 如果点击的天数没变化，return
-  if (curDay.value === index)
-    return
-  // 如果点击的天数不同，赋值
-  if (typeof index === 'number' && index !== curDay.value)
-    curDay.value = index
 
-  // 如果所选的天数下没有作业，清空作业列表&&return
-  if (dayList.value[curDay.value].count === 0) {
-    homeworkList.value = []
-    return
+const homeworkCount = computed(() => {
+  // 检查dayList是否有值并且curDay的值是一个有效的索引
+  if (dayList.value.length > 0 && curDay.value >= 0 && curDay.value < dayList.value.length) {
+    // 确保访问的是一个已定义的对象且有count属性
+    return dayList.value[curDay.value]?.count || 0
   }
-  // 发送请求渲染数据
-  uni.showLoading()
-  Fetch<HomeworkList>(api.getHomeworkList, { method: 'GET', data: { day: curDay.value + 1, count: dayList.value[curDay.value].count } }).then((data) => {
-    homeworkList.value = data.list
-    uni.hideLoading()
-  }).catch(() => {
-    uni.showToast({
-      title: `获取${selectDate.value}下的天数失败`,
-    })
-  })
+  else {
+    // 如果不满足条件，可以返回一个默认值，比如0，或者根据实际情况处理
+    return 0
+  }
+})
+
+function handleSelectDay(index: number) {
+  // 说明是通过选择年月转到此函数
+  if (index < 0)
+    return
+  // 如果点击的天数没变化，return
+  if (curDay.value !== index) {
+    // 如果点击的天数不同，赋值
+    curDay.value = index
+    // 如果所选的天数下没有作业，清空作业列表&&return
+    if (dayList.value[curDay.value].count === 0)
+      homeworkList.value = []
+  }
 }
+
 // 获取年/月下的天数及作业数量
-function getDays(year: string, month: string) {
+function fetchDays() {
   uni.showLoading()
-  Fetch<Array<DayList>>(api.getHomeworkDays, { method: 'GET', data: { year, month } }).then((data) => {
+  const [year, month] = selectDate.value.split('/')
+  Fetch<Array<DayType>>(api.getHomeworkDays, { method: 'GET', data: { year, month } }).then((data) => {
     dayList.value = data
-    uni.hideLoading()
     // 获取天下面的作业列表
-    handleSelectDay(undefined)
+    handleSelectDay(-1)
     // dom更新完毕
     nextTick(() => {
+      const curYear = new Date().getFullYear().toString()
       const curMonth = new Date().getMonth() + 1
-      if (curMonth !== Number(month))
+      if (curYear !== year || curMonth !== Number(month))
         curDay.value = 0
+      else
+        curDay.value = new Date().getDate() - 1
       scrollToDay.value = `day-${curDay.value}`
+      uni.hideLoading()
     })
   }).catch(() => {
+    uni.hideLoading()
     uni.showToast({
       title: `获取${selectDate.value}下的天数失败`,
     })
@@ -138,8 +124,31 @@ function handleSelectClass(e: { detail: { value: number } }) {
 
 // 加载页面时获取当前月份的作业
 onLoad(() => {
-  const [year, month] = selectDate.value.split('/')
-  getDays(year, month)
+  fetchDays()
+})
+
+watch(curDay, () => {
+  // 判断今天有无作业，如果有在请求
+  if (dayList.value[curDay.value].count > 0) {
+    clear()
+    load({ day: curDay.value + 1, count: dayList.value[curDay.value].count })
+  }
+})
+
+watch(selectDate, () => {
+  fetchDays()
+})
+
+// 下拉刷新，重置请求参数
+onPullDownRefresh(() => {
+  clear()
+  load()?.then(() => {
+    uni.stopPullDownRefresh()
+  })
+})
+// 到达底部，加载更多
+onReachBottom(() => {
+  next()
 })
 </script>
 
@@ -151,11 +160,11 @@ onLoad(() => {
       <div class="px-30rpx mb-25rpx">
         <div :style="[tops ? `height:${tops}px` : `height: 95rpx`]" />
         <div class="text-40 font-bold h-38" :style="[height ? `height:${height}px; line-height: ${height}px` : `height: auto; line-height: normal`]">
-          智慧作业教师端
+          智慧作业教师端{{ homeworkCount }}
         </div>
       </div>
       <!-- 选择年月 -->
-      <div class="flex-between px-30rpx mb-30rpx">
+      <div class="px-30rpx mb-30rpx flex-between">
         <picker class="h-full" mode="date" :value="selectDate" :start="getDate('start')" :end="getDate('end')" fields="month" @change="handleSelectDate">
           <div class="flex relative items-center">
             <text class="text-38 font-bold color-[#000333]">
@@ -198,7 +207,7 @@ onLoad(() => {
         <shy-card-homework
           :title="item.title" :type="item.type" :status="item.status" :start-time="item.start_time"
           :end-time="item.end_time"
-          @tap="handleTo('correction-detail')"
+          @tap="handleToPage('correction-detail')"
         >
           <div class="mb-10rpx text-26rpx font-bold text-[#000333]">
             <text class="text-36rpx text-[#00A76E]">
@@ -210,7 +219,8 @@ onLoad(() => {
           </div>
         </shy-card-homework>
       </div>
-      <GuoduEmpty v-show="!homeworkList.length" message="今天没有布置作业" />
+      <shy-load-more v-show="homeworkCount" :is-loading="isLoading" :is-load-all="isLoadAll" @more="() => next()" />
+      <GuoduEmpty v-show="!homeworkCount" message="今天没有布置作业" />
     </div>
     <div class="h-40" />
   </div>
