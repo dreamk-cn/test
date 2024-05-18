@@ -1,10 +1,8 @@
 // express_demo.js 文件
 // 导入 app.js
 const crypto = require('node:crypto')
-const { type } = require('node:os')
 const bodyParser = require('body-parser')
 const express = require('express')
-const { number } = require('echarts')
 
 const app = express()
 app.use(bodyParser())
@@ -274,7 +272,7 @@ app.get('/api/homework/days', (req, res) => {
   const result = []
   for (let day = 1; day <= daysInMonth; day++) {
     // 随机生成0或者0-9以内的随机数
-    const count = (Math.random() < 0.5 ? 0 : Math.floor(Math.random() * 10))
+    const count = (Math.random() < 0.5 ? 0 : Math.floor(Math.random() * 100))
     result.push({ id: generateUUID(), day, count })
   }
 
@@ -284,27 +282,45 @@ app.get('/api/homework/days', (req, res) => {
       msg: '获取成功！',
       data: result,
     })
-  }, 500)
+  }, 1000)
 })
 
 // 根据日期获取作业列表
 app.get('/api/homework/list', (req, res) => {
   const day = req.query.day
   const count = req.query.count
-  if (!day || !count) {
-    res.send({
+  const { page_size = 10, page_no = 1 } = req.query
+  if (!day || Number.isNaN(count)) {
+    return res.send({
       code: -1,
-      msg: '参数不对',
+      msg: '获取作业列表失败，参数错误！',
     })
   }
+
+  const startIndex = (page_no - 1) * page_size
+  // 判断是否有足够的数据来填充当前页
+  if (startIndex >= count) {
+    // 如果请求的页码超过了实际数据范围，可选择返回空list或前一页数据，这里以返回空list为例
+    return res.send({
+      code: 0,
+      msg: '获取成功！',
+      data: {
+        count,
+        page_no,
+        page_size,
+        list: [],
+      },
+    })
+  }
+  // 计算本次应返回的数据量
+  const pageSizeForThisPage = Math.min(page_size, count - startIndex)
   const result = {
     count: Number.parseInt(count),
     page_no: '1',
     page_size: '10',
     list: [],
   }
-
-  for (let i = 0; i < result.count; i++) {
+  for (let i = 0; i < pageSizeForThisPage; i++) {
     result.list.push({
       id: generateUUID(),
       type: Math.random() > 0.5 ? 0 : 1,
@@ -323,7 +339,7 @@ app.get('/api/homework/list', (req, res) => {
       msg: '获取成功！',
       data: result,
     })
-  }, 1000)
+  }, 2000)
 })
 
 app.listen(8081, () => {
