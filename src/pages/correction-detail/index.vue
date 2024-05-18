@@ -65,7 +65,7 @@ const chartData1 = ref<ECOption>({
 })
 
 // 数据统计echarts配置
-const data2 = [[40, 6], [30, 6], [50, 16], [80, 60], [50, 3], [30, 15]]
+const data2 = [[40, 6], [30, 6], [50, 16], [85, 60], [50, 13], [30, 15]]
 const chartData2 = ref<ECOption>({
   legend: {
     data: [
@@ -215,7 +215,7 @@ const curTab = ref(0)
       <!-- 最高得分率 -->
       <shy-card-correctiond-details class="mb-25rpx">
         <template #header>
-          <shy-card-score-rate-head title="最高得分率" accuracy="80%" :color-type="1" />
+          <shy-card-score-rate-head title="最高得分率" accuracy="75%" :color-type="1" />
         </template>
         <view class="grid grid-cols-3 gap-150rpx gap-y-40rpx">
           <view v-for="item in 4" :key="item" class="flex items-center">
