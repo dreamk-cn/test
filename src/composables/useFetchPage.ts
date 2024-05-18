@@ -17,7 +17,7 @@ export function useFetchPage<T = any>(url: string, options: Partial<Omit<FetchOp
   const pageNo = ref(1)
   const pageSize = ref(options2?.pageSize ?? 10)
   const isLoadAll = ref(false)
-  const isLoading = ref(true)
+  const isLoading = ref(false)
   let lastData: Record<string, string | number> | undefined
 
   function load(data?: Record<string, string | number>) {
