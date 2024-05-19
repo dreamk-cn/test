@@ -62,18 +62,19 @@ const dayList = ref<Array<DayType>>([])
 const curDay = ref(0)
 const scrollToDay = ref('')
 
-const homeworkCount = computed(() => {
+// 今日作业数量
+const todayHomeworkCount = computed(() => {
   // 检查dayList是否有值并且curDay的值是一个有效的索引
   if (dayList.value.length > 0 && curDay.value >= 0 && curDay.value < dayList.value.length) {
     // 确保访问的是一个已定义的对象且有count属性
-    return dayList.value[curDay.value]?.count || 0
+    return dayList.value[curDay.value].count
   }
   else {
-    // 如果不满足条件，可以返回一个默认值，比如0，或者根据实际情况处理
     return 0
   }
 })
 
+// 选择天数
 function handleSelectDay(index: number) {
   // 说明是通过选择年月转到此函数
   if (index < 0)
@@ -83,7 +84,7 @@ function handleSelectDay(index: number) {
     // 如果点击的天数不同，赋值
     curDay.value = index
     // 如果所选的天数下没有作业，清空作业列表&&return
-    if (dayList.value[curDay.value].count === 0)
+    if (todayHomeworkCount.value === 0)
       homeworkList.value = []
   }
 }
@@ -122,33 +123,41 @@ function handleSelectClass(e: { detail: { value: number } }) {
   selectClass.value = classList.value[e.detail.value]
 }
 
-// 加载页面时获取当前月份的作业
-onLoad(() => {
-  fetchDays()
-})
-
+// 监听当天天数的变化，重新进行请求
 watch(curDay, () => {
   // 判断今天有无作业，如果有在请求
-  if (dayList.value[curDay.value].count > 0) {
+  if (todayHomeworkCount.value > 0) {
     clear()
-    load({ day: curDay.value + 1, count: dayList.value[curDay.value].count })
+    load({ day: curDay.value + 1, count: todayHomeworkCount.value })
   }
 })
 
+// 监听日期的变化，进行请求
 watch(selectDate, () => {
   fetchDays()
 })
 
 // 下拉刷新，重置请求参数
 onPullDownRefresh(() => {
-  clear()
-  load()?.then(() => {
+  if (todayHomeworkCount.value) {
+    clear()
+    load()?.then(() => {
+      uni.stopPullDownRefresh()
+    })
+  }
+  else {
     uni.stopPullDownRefresh()
-  })
+  }
 })
 // 到达底部，加载更多
 onReachBottom(() => {
-  next()
+  if (todayHomeworkCount.value)
+    next()
+})
+
+// 加载页面时获取当前月份的作业
+onLoad(() => {
+  fetchDays()
 })
 </script>
 
@@ -160,7 +169,7 @@ onReachBottom(() => {
       <div class="px-30rpx mb-25rpx">
         <div :style="[tops ? `height:${tops}px` : `height: 95rpx`]" />
         <div class="text-40 font-bold h-38" :style="[height ? `height:${height}px; line-height: ${height}px` : `height: auto; line-height: normal`]">
-          智慧作业教师端{{ homeworkCount }}
+          智慧作业教师端{{ todayHomeworkCount }}
         </div>
       </div>
       <!-- 选择年月 -->
@@ -187,6 +196,15 @@ onReachBottom(() => {
       <!-- 选择天 -->
       <div class="mb-30rpx">
         <scroll-view class="whitespace-nowrap" scroll-x :show-scrollbar="false" :scroll-into-view="scrollToDay" scroll-with-animation>
+          <div class="day-item inline-block opacity-0">
+            <div class="mx-auto rounded-20rpx text-36rpx line-height-66rpx text-center h-66rpx w-1rpx transition-opacity">
+              |
+            </div>
+            <div class="mx-auto bg-[#00A76E] rounded-1/2 h-12rpx w-12rpx transition-opacity" />
+            <div class="text-22rpx line-height-34rpx text-center text-[#000333] transition-opacity">
+              |
+            </div>
+          </div>
           <div v-for="({ id, day, count }, index) in dayList" :id="`day-${index}`" :key="id" class="day-item px-10rpx inline-block" @tap="handleSelectDay(index)">
             <div :class="[curDay === index ? 'bg-[#00A76E] text-white font-bold' : 'bg-transparent text-[#000333]'] " class="mx-auto rounded-20rpx text-36rpx line-height-66rpx text-center h-66rpx w-66rpx transition-opacity">
               {{ day }}
@@ -194,6 +212,15 @@ onReachBottom(() => {
             <div class="mx-auto bg-[#00A76E] rounded-1/2 h-12rpx w-12rpx transition-opacity" :class="[(count && curDay !== index) ? '' : 'opacity-0']" />
             <div class="text-22rpx line-height-34rpx text-center text-[#000333] transition-opacity" :class="[(count && curDay === index) ? '' : 'opacity-0']">
               {{ count }}份作业
+            </div>
+          </div>
+          <div class="day-item inline-block opacity-0">
+            <div class="mx-auto rounded-20rpx text-36rpx line-height-66rpx text-center h-66rpx w-1rpx transition-opacity">
+              |
+            </div>
+            <div class="mx-auto bg-[#00A76E] rounded-1/2 h-12rpx w-12rpx transition-opacity" />
+            <div class="text-22rpx line-height-34rpx text-center text-[#000333] transition-opacity">
+              |
             </div>
           </div>
         </scroll-view>
@@ -219,28 +246,13 @@ onReachBottom(() => {
           </div>
         </shy-card-homework>
       </div>
-      <shy-load-more v-show="homeworkCount" :is-loading="isLoading" :is-load-all="isLoadAll" @more="() => next()" />
-      <GuoduEmpty v-show="!homeworkCount" message="今天没有布置作业" />
+      <shy-load-more v-show="todayHomeworkCount" :is-loading="isLoading" :is-load-all="isLoadAll" @more="() => next()" />
+      <GuoduEmpty v-show="!todayHomeworkCount" message="今天没有布置作业" />
     </div>
     <div class="h-40" />
   </div>
 </template>
 
 <style lang="scss">
-.page-index {
-  .day-item {
-    &:first-child {
-      padding-left: 30rpx;
-    }
-    &:last-child {
-      padding-right: 30rpx;
-    }
-  }
-  scroll-view::-webkit-scrollbar {
-    display: none; /* 隐藏滚动条 */
-    width: 0;
-    height: 0;
-    color: transparent;
-  }
-}
+
 </style>
