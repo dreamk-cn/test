@@ -20,7 +20,7 @@ declare global {
   const getActivePinia: typeof import('pinia')['getActivePinia']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
-  const getDate: typeof import('./src/composables/useSelectDate')['getDate']
+  const getDate: typeof import('./src/composables/ussDate')['getDate']
   const h: typeof import('vue')['h']
   const handleSelectDate: typeof import('./src/composables/useSelectDate')['handleSelectDate']
   const handleTo: typeof import('./src/composables/useNavigateTo')['handleTo']
@@ -138,9 +138,8 @@ declare module 'vue' {
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
-    readonly getDate: UnwrapRef<typeof import('./src/composables/useSelectDate')['getDate']>
+    readonly getDate: UnwrapRef<typeof import('./src/composables/ussDate')['getDate']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
-    readonly handleSelectDate: UnwrapRef<typeof import('./src/composables/useSelectDate')['handleSelectDate']>
     readonly handleToPage: UnwrapRef<typeof import('./src/composables/useNavigateTo')['handleToPage']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly isClient: UnwrapRef<typeof import('./src/composables/index')['isClient']>
@@ -198,7 +197,6 @@ declare module 'vue' {
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>
     readonly ref: UnwrapRef<typeof import('vue')['ref']>
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
-    readonly selectDate: UnwrapRef<typeof import('./src/composables/useSelectDate')['selectDate']>
     readonly setActivePinia: UnwrapRef<typeof import('pinia')['setActivePinia']>
     readonly setMapStoreSuffix: UnwrapRef<typeof import('pinia')['setMapStoreSuffix']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
@@ -248,9 +246,8 @@ declare module '@vue/runtime-core' {
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
-    readonly getDate: UnwrapRef<typeof import('./src/composables/useSelectDate')['getDate']>
+    readonly getDate: UnwrapRef<typeof import('./src/composables/ussDate')['getDate']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
-    readonly handleSelectDate: UnwrapRef<typeof import('./src/composables/useSelectDate')['handleSelectDate']>
     readonly handleToPage: UnwrapRef<typeof import('./src/composables/useNavigateTo')['handleToPage']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly isClient: UnwrapRef<typeof import('./src/composables/index')['isClient']>
@@ -308,7 +305,6 @@ declare module '@vue/runtime-core' {
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>
     readonly ref: UnwrapRef<typeof import('vue')['ref']>
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
-    readonly selectDate: UnwrapRef<typeof import('./src/composables/useSelectDate')['selectDate']>
     readonly setActivePinia: UnwrapRef<typeof import('pinia')['setActivePinia']>
     readonly setMapStoreSuffix: UnwrapRef<typeof import('pinia')['setMapStoreSuffix']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>

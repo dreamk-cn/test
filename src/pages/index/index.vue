@@ -22,6 +22,7 @@ onReady(() => {
   })
 })
 
+const currentDate = ref(getDate(''))
 const { list: homeworkList, isLoading, isLoadAll, load, clear, next } = useFetchPage<HomeworkDetailType>(api.getHomeworkList)
 // 当前天数下标
 const curDayIndex = ref(0)
@@ -40,7 +41,8 @@ const todayHomeworkCount = computed(() => {
 })
 // 选择年月
 function onDateChange(e: string) {
-  selectDate.value = e
+  const [year, month] = e.split('-')
+  currentDate.value = `${year}/${month}`
   fetchDays()
 }
 // 选择天
@@ -60,7 +62,7 @@ function onDayChange(index: number) {
 // 获取年/月下的天数及作业数量
 function fetchDays() {
   uni.showLoading()
-  const [year, month] = selectDate.value.split('/')
+  const [year, month] = currentDate.value.split('/')
   Fetch<Array<DayType>>(api.getHomeworkDays, { method: 'GET', data: { year, month } }).then((data) => {
     dayList.value = data
     // 获取天下面的作业列表
@@ -79,7 +81,7 @@ function fetchDays() {
   }).catch(() => {
     uni.hideLoading()
     uni.showToast({
-      title: `获取${selectDate.value}下的天数失败`,
+      title: `获取${currentDate.value}下的天数失败`,
     })
   })
 }
@@ -130,7 +132,7 @@ onLoad(() => {
       </div>
       <!-- 选择年月 -->
       <div class="px-30rpx mb-30rpx">
-        <shy-date-selector @date-change="onDateChange" />
+        <shy-date-selector :current-date="currentDate" @date-change="onDateChange" />
       </div>
       <!-- 选择天 -->
       <div class="mb-30rpx">
