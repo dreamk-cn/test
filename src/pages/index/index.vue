@@ -24,17 +24,15 @@ onReady(() => {
 
 const { list: homeworkList, isLoading, isLoadAll, load, clear, next } = useFetchPage<HomeworkDetailType>(api.getHomeworkList)
 // 当前天数下标
-const curDay = ref(0)
-// scroll-view滚动到哪里
-const scrollToDay = ref('')
-// 天数list
+const curDayIndex = ref(0)
+const scrollToDayId = ref('')
 const dayList = ref<Array<DayType>>([])
 // 今日作业数量
 const todayHomeworkCount = computed(() => {
   // 检查dayList是否有值并且curDay的值是一个有效的索引
-  if (dayList.value.length > 0 && curDay.value >= 0 && curDay.value < dayList.value.length) {
+  if (dayList.value.length > 0 && curDayIndex.value >= 0 && curDayIndex.value < dayList.value.length) {
     // 确保访问的是一个已定义的对象且有count属性
-    return dayList.value[curDay.value].count
+    return dayList.value[curDayIndex.value].count
   }
   else {
     return 0
@@ -51,9 +49,9 @@ function onDayChange(index: number) {
   if (index < 0)
     return
   // 如果点击的天数没变化，return
-  if (curDay.value !== index) {
+  if (curDayIndex.value !== index) {
     // 如果点击的天数不同，赋值
-    curDay.value = index
+    curDayIndex.value = index
     // 如果所选的天数下没有作业，清空作业列表&&return
     if (todayHomeworkCount.value === 0)
       homeworkList.value = []
@@ -72,10 +70,10 @@ function fetchDays() {
       const curYear = new Date().getFullYear().toString()
       const curMonth = new Date().getMonth() + 1
       if (curYear !== year || curMonth !== Number(month))
-        curDay.value = 0
+        curDayIndex.value = 0
       else
-        curDay.value = new Date().getDate() - 1
-      scrollToDay.value = `day-${curDay.value}`
+        curDayIndex.value = new Date().getDate() - 1
+      scrollToDayId.value = `day-${curDayIndex.value}`
       uni.hideLoading()
     })
   }).catch(() => {
@@ -87,11 +85,11 @@ function fetchDays() {
 }
 
 // 监听当天天数的变化，重新进行请求
-watch(curDay, () => {
+watch(curDayIndex, () => {
   // 判断今天有无作业，如果有在请求
   if (todayHomeworkCount.value > 0) {
     clear()
-    load({ day: curDay.value + 1, count: todayHomeworkCount.value })
+    load({ day: curDayIndex.value + 1, count: todayHomeworkCount.value })
   }
 })
 
@@ -136,7 +134,7 @@ onLoad(() => {
       </div>
       <!-- 选择天 -->
       <div class="mb-30rpx">
-        <shy-day-selector :day-list="dayList" :selected-day-index="curDay" :scroll-to-day-id="scrollToDay" @select-day="onDayChange" />
+        <shy-day-selector :day-list="dayList" :selected-day-index="curDayIndex" :scroll-to-day-id="scrollToDayId" @select-day="onDayChange" />
       </div>
     </div>
     <!-- 中间功能模块-快捷入口 -->
