@@ -18,9 +18,7 @@ function handleTo(name: string) {
     return
   }
 
-  uni.navigateTo({
-    url: `/pages/${name}/index`,
-  })
+  handleToPage(name)
 }
 </script>
 
