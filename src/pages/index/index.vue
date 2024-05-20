@@ -144,24 +144,26 @@ onLoad(() => {
       </div>
     </div>
     <!-- 中间功能模块-快捷入口 -->
-    <shy-quick-entry class="px-30rpx mb-30rpx" />
+    <shy-quick-entry class="px-30rpx mb-35rpx" />
     <!-- 底部作业列表模块 -->
     <div class="px-30rpx">
-      <div v-for="item in homeworkList" :key="item.id" class="mb-30rpx">
-        <shy-card-homework
-          :title="item.title" :type="item.type" :status="item.status" :start-time="item.start_time"
-          :end-time="item.end_time"
-          @tap="handleToPage('correction-detail')"
-        >
-          <div class="mb-10rpx text-26rpx font-bold text-[#000333]">
-            <text class="text-36rpx text-[#00A76E]">
-              {{ item.done }}
-            </text>/{{ item.total }}
-          </div>
-          <div class="text-22rpx text-[#000333]">
-            已批改人数
-          </div>
-        </shy-card-homework>
+      <div v-show="todayHomeworkCount">
+        <div v-for="item in homeworkList" :key="item.id" class="mb-30rpx">
+          <shy-card-homework
+            :title="item.title" :type="item.type" :status="item.status" :start-time="item.start_time"
+            :end-time="item.end_time"
+            @tap="handleToPage('correction-detail')"
+          >
+            <div class="mb-10rpx text-26rpx font-bold text-[#000333]">
+              <text class="text-36rpx text-[#00A76E]">
+                {{ item.done }}
+              </text>/{{ item.total }}
+            </div>
+            <div class="text-22rpx text-[#000333]">
+              已批改人数
+            </div>
+          </shy-card-homework>
+        </div>
       </div>
       <shy-load-more v-show="todayHomeworkCount" :is-loading="isLoading" :is-load-all="isLoadAll" @more="() => next()" />
       <GuoduEmpty v-show="!todayHomeworkCount" message="今天没有布置作业" />
