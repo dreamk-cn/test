@@ -48,8 +48,12 @@ function onDateChange(e: string) {
 // 选择天
 function onDayChange(index: number) {
   // 说明是通过选择年月转到此函数
-  if (index < 0)
-    return
+  if (index < 0) {
+    curDayIndex.value = 0
+    if (todayHomeworkCount.value === 0)
+      homeworkList.value = []
+  }
+
   // 如果点击的天数没变化，return
   if (curDayIndex.value !== index) {
     // 如果点击的天数不同，赋值
