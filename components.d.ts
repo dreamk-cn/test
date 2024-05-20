@@ -22,6 +22,9 @@ declare module 'vue' {
     ShyCardHomework: typeof import('./src/components/shy-card-homework/shy-card-homework.vue')['default']
     ShyCardScoreRateHead: typeof import('./src/components/shy-card-score-rate-head/shy-card-score-rate-head.vue')['default']
     ShyCustomNavBar: typeof import('./src/components/shy-custom-nav-bar/shy-custom-nav-bar.vue')['default']
+    ShyDateSelector: typeof import('./src/components/shy-date-selector/shy-date-selector.vue')['default']
+    ShyDaySelector: typeof import('./src/components/shy-day-selector/shy-day-selector.vue')['default']
     ShyLoadMore: typeof import('./src/components/shy-load-more/shy-load-more.vue')['default']
+    ShyQuickEntry: typeof import('./src/components/shy-quick-entry/shy-quick-entry.vue')['default']
   }
 }
