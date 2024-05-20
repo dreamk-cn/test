@@ -22,26 +22,34 @@ const statusMap = {
   3: { message: '部分批改', styleClass: 'i-carbon-hourglass text-[#8ca0c6]' },
 }
 
-// 使用映射对象计算status的message和style
-const statusMessage = computed(() => statusMap[props.status]?.message || '未知内容')
-const statusStyle = computed(() => statusMap[props.status]?.styleClass || '未知样式')
+const statusMessage = computed(() => statusMap[props.status].message)
+const statusStyle = computed(() => statusMap[props.status].styleClass)
 
-// 计算type
-const typeMessage = computed(() => {
-  if (props.type === 1)
-    return '基础'
-  else if (props.type === 2)
-    return '分组'
-  else
-    return '分层'
-})
+const typeMap = {
+  1: { message: '基础', styleClass: 'text-[--guodu-color-blue-500] bg-[--guodu-color-blue-100]' },
+  2: { message: '分组', styleClass: 'text-[--guodu-color-green-500] bg-[--guodu-color-green-100]' },
+  3: { message: '分层', styleClass: 'text-[--guodu-color-yellow-500] bg-[--guodu-color-yellow-100]' },
+}
+
+const typeMessage = computed(() => typeMap[props.status].message)
+const typeStyle = computed(() => typeMap[props.status].styleClass)
+
+// // 计算type
+// const typeMessage = computed(() => {
+//   if (props.type === 1)
+//     return '基础'
+//   else if (props.type === 2)
+//     return '分组'
+//   else
+//     return '分层'
+// })
 </script>
 
 <template>
   <div class="px-25rpx py-30rpx bg-white rounded-20rpx">
     <div class="mb-30rpx flex justify-between">
       <div class="flex">
-        <div class="px-20rpx py-10rpx bg-[#EBF6FF] rounded-20rpx text-20rpx font-bold text-[#0084FF]">
+        <div class="px-20rpx py-10rpx bg-[--guodu-color-blue-100] rounded-20rpx text-20rpx font-bold text-[--guodu-color-blue-500]" :class="[typeStyle]">
           {{ typeMessage }}
         </div>
         <div class="ml-19rpx text-30rpx font-bold text-[#000333]">
@@ -61,7 +69,7 @@ const typeMessage = computed(() => {
           发布日期:
         </text>
         <text class="text-[#8F9AA8]">
-          {{ new Date(startTime * 1000).toLocaleDateString() }}
+          {{ useDateFormat(new Date(startTime * 1000), 'YYYY-MM-DD').value }}
         </text>
       </div>
       <div>
@@ -69,7 +77,7 @@ const typeMessage = computed(() => {
           批改结束:
         </text>
         <text class="text-[#8F9AA8]">
-          {{ new Date(endTime * 1000).toLocaleDateString() }}
+          {{ useDateFormat(new Date(endTime * 1000), 'YYYY-MM-DD').value }}
         </text>
       </div>
     </div>
