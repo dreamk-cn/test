@@ -1,4 +1,3 @@
-<!-- DayPicker.vue -->
 <script setup lang="ts">
 interface DayItemType {
   id: number

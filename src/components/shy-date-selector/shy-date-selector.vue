@@ -1,4 +1,3 @@
-<!-- DateSelector.vue -->
 <script setup lang="ts">
 const props = defineProps<{
   currentDate: string
@@ -32,10 +31,10 @@ function onClassChange(e: { detail: { value: number } }) {
         <div class="i-carbon-chevron-down ml-17rpx text-28 text-[#778496]" />
       </div>
     </picker>
-    <div class="p-x-23rpx bg-[#ffffff66] b b-2px border-[#fff] rounded-18rpx border-solid h-70 w-250 box-border">
-      <picker mode="selector" :value="selectedClassName" :range="classList" @change="onClassChange">
-        <div class="flex-between h-66">
-          <text class="text-26">
+    <div class="p-x-23rpx bg-[#ffffff66] b b-2px border-[#fff] rounded-18rpx border-solid flex-center h-70 w-250 box-border">
+      <picker class="w-full" mode="selector" :value="selectedClassName" :range="classList" @change="onClassChange">
+        <div class="flex-between">
+          <text class="text-26 text-#000333">
             {{ selectedClassName }}
           </text>
           <div class="i-carbon-chevron-down text-20 text-[#778496]" />
