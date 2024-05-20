@@ -323,7 +323,7 @@ app.get('/api/homework/list', (req, res) => {
   for (let i = 0; i < pageSizeForThisPage; i++) {
     result.list.push({
       id: generateUUID(),
-      type: Math.random() > 0.5 ? 0 : 1,
+      type: Math.floor(Math.random() * 3) + 1,
       title: `${day}号家庭作业作业${i + 1}`,
       status: Math.floor(Math.random() * 3) + 1,
       start_time: Math.floor(new Date().getTime() / 1000),
