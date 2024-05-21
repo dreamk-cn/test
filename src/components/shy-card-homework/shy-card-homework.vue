@@ -26,13 +26,13 @@ const statusMessage = computed(() => statusMap[props.status].message)
 const statusStyle = computed(() => statusMap[props.status].styleClass)
 
 const typeMap = {
-  1: { message: '基础', styleClass: 'text-[--guodu-color-blue-500] bg-[--guodu-color-blue-100]' },
-  2: { message: '分组', styleClass: 'text-[--guodu-color-green-500] bg-[--guodu-color-green-100]' },
-  3: { message: '分层', styleClass: 'text-[--guodu-color-yellow-500] bg-[--guodu-color-yellow-100]' },
+  1: { message: '基础', style: 'color: var(--guodu-color-blue-500);background-color:var(--guodu-color-blue-100)' },
+  2: { message: '分组', style: 'color: var(--guodu-color-yellow-500); background-color:var(--guodu-color-yellow-100)' },
+  3: { message: '分层', style: 'color: var(--guodu-color-green-500); background-color:var(--guodu-color-green-100)' },
 }
 
 const typeMessage = computed(() => typeMap[props.status].message)
-const typeStyle = computed(() => typeMap[props.status].styleClass)
+const typeStyle = computed(() => typeMap[props.status].style)
 
 // // 计算type
 // const typeMessage = computed(() => {
@@ -49,7 +49,7 @@ const typeStyle = computed(() => typeMap[props.status].styleClass)
   <div class="px-25rpx py-30rpx bg-white rounded-20rpx">
     <div class="mb-30rpx flex justify-between">
       <div class="flex">
-        <div class="px-20rpx py-10rpx bg-[--guodu-color-blue-100] rounded-20rpx text-20rpx font-bold text-[--guodu-color-blue-500]" :class="[typeStyle]">
+        <div class="px-20rpx py-10rpx rounded-20rpx text-20rpx font-bold" :style="[typeStyle]">
           {{ typeMessage }}
         </div>
         <div class="ml-19rpx text-30rpx font-bold text-[#000333]">
@@ -86,12 +86,12 @@ const typeStyle = computed(() => typeMap[props.status].styleClass)
         <slot />
       </div>
       <div class="flex">
-        <div class="bg-white b b-1 border-[#C9CED9] rounded-33rpx border-solid text-26rpx text-[#000333] flex-center h-66rpx w-170rpx">
+        <button class="uno-btn">
           作业详情
-        </div>
-        <div class="ml-20rpx bg-[#00A76E] b b-1 border-transparent rounded-33rpx border-solid text-26rpx text-white flex-center h-66rpx w-170rpx">
+        </button>
+        <button class="uno-btn btn-green ml-20rpx">
           学情报告
-        </div>
+        </button>
       </div>
     </div>
   </div>
