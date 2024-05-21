@@ -30,7 +30,7 @@ function handleLogin() {
 
 <template>
   <view class="bg-#F5F5F9 h-100vh">
-    <view class="login-bg text-55rpx font-bold text-white flex-center h-520rpx w-750rpx">
+    <view class="login-bg text-55rpx font-bold text-white flex-center h-520rpx w-full">
       LOGO
     </view>
     <view class="p-50rpx bg-#F5F5F9 rounded-t-30rpx transform-translate-y--50rpx">
@@ -58,10 +58,10 @@ function handleLogin() {
   </view>
 </template>
 
-<style>
+<style scoped>
 .login-bg {
   background-image: url("https://guodu-homework.oss-cn-beijing.aliyuncs.com/static/teacher/login_top_bg.png");
-  background-size: 750rpx 530rpx;
+  background-size: 100% 530rpx;
   background-repeat: no-repeat;
   min-height: 530rpx;
 }

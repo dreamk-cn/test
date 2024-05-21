@@ -160,7 +160,7 @@ const curTab = ref(0)
 
 <template>
   <view class="bg-white">
-    <view class="px-30rpx pb-70rpx pt-40rpx bg-[#00A76E] color-white w-750rpx">
+    <view class="px-30rpx pb-70rpx pt-40rpx bg-[#00A76E] color-white w-w-full">
       <view class="mb-20rpx flex items-center">
         <view class="mr-20rpx text-32rpx font-bold text-white">
           10/07·初中数学
