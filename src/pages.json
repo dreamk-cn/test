@@ -9,7 +9,7 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "智慧作业校园端",
+        "navigationBarTitleText": "智慧作业教师端",
         "navigationStyle": "custom",
         "enablePullDownRefresh": true
       }
