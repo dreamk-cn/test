@@ -24,6 +24,8 @@ export default {
       'flex-center': 'flex justify-center items-center',
       'flex-left': 'flex justify-start items-center',
       'flex-between': 'flex justify-between items-center',
+      'uno-btn': 'px-34rpx py-20rpx inline-block bg-white b b-1 border-[#C9CED9] rounded-33rpx border-solid text-26rpx leading-26rpx text-[#000333]',
+      'btn-green': 'bg-[#00A76E] text-white border-transparent',
     },
   ],
 
