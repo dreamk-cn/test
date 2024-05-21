@@ -90,7 +90,7 @@
       }
     },
     {
-      "path" : "pages/correction-detail/index",
+      "path" : "pages/correctionDetail/index",
       "style" : 
       {
         "navigationBarTitleText" : "批改详情",
@@ -99,7 +99,7 @@
       }
     },
     {
-      "path" : "pages/publish-homework/index",
+      "path" : "pages/publishHomework/index",
       "style" : 
       {
         "navigationBarTitleText" : "发布作业",
