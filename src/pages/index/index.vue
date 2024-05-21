@@ -129,7 +129,7 @@ onLoad(() => {
     <div>
       <!-- 自定义头部导航栏 -->
       <div class="px-30rpx mb-25rpx">
-        <div :style="[tops ? `height:${tops}px` : `height: 95rpx`]" />
+        <div :style="[tops ? `height:${tops}px` : `height: ${height}rpx`]" />
         <div class="text-40 font-bold h-38" :style="[height ? `height:${height}px; line-height: ${height}px` : `height: auto; line-height: normal`]">
           智慧作业教师端
         </div>
