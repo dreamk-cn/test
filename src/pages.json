@@ -105,6 +105,12 @@
         "navigationBarTitleText" : "发布作业",
         "navigationStyle": "custom"
       }
+    }, {
+      "path": "pages/mine/credit",
+      "style": {
+        "navigationBarTitleText": "我的积分",
+        "navigationStyle": "custom"
+      }
     }
   ],
   "globalStyle": {
