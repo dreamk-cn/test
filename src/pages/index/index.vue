@@ -3,25 +3,6 @@ import { Fetch } from '~/utils/fetch'
 import { api } from '~/config/api'
 import type { DayType, HomeworkDetailType } from '~/types/homework'
 
-// 自定义头部
-const tops = ref(0)
-const height = ref(0)
-onReady(() => {
-  uni.getSystemInfo({
-    success: (e) => {
-      tops.value = e.statusBarHeight || 0
-      let custom = {
-        top: 0,
-        height: 40,
-      }
-      // #ifndef H5||APP-PLUS
-      custom = uni.getMenuButtonBoundingClientRect()
-      // #endif
-      height.value = custom.height + (custom.top - (e.statusBarHeight || 0)) * 2
-    },
-  })
-})
-
 const currentDate = ref(getDate(''))
 const { list: homeworkList, isLoading, isLoadAll, load, clear, next } = useFetchPage<HomeworkDetailType>(api.getHomeworkList)
 // 当前天数下标
@@ -79,14 +60,15 @@ function fetchDays() {
         curDayIndex.value = 0
       else
         curDayIndex.value = new Date().getDate() - 1
+      // 更新滚动位置
       scrollToDayId.value = `day-${curDayIndex.value}`
-      uni.hideLoading()
     })
   }).catch(() => {
-    uni.hideLoading()
     uni.showToast({
       title: `获取${currentDate.value}下的天数失败`,
     })
+  }).finally(() => {
+    uni.hideLoading()
   })
 }
 
@@ -129,10 +111,11 @@ onLoad(() => {
     <div>
       <!-- 自定义头部导航栏 -->
       <div class="px-30rpx mb-25rpx">
-        <div :style="[tops ? `height:${tops}px` : `height: ${height}rpx`]" />
-        <div class="text-40 font-bold h-38" :style="[height ? `height:${height}px; line-height: ${height}px` : `height: auto; line-height: normal`]">
-          智慧作业教师端
-        </div>
+        <shy-custom-nav-bar>
+          <div class="text-40 font-bold">
+            智慧作业教师端
+          </div>
+        </shy-custom-nav-bar>
       </div>
       <!-- 选择年月 -->
       <div class="px-30rpx mb-30rpx">

@@ -1,9 +1,4 @@
 <script setup lang="ts">
-// 返回上一页
-function handleClickBack() {
-  uni.navigateBack()
-}
-
 /// / 发布班级
 const showHomeworkClass = ref(false)
 const rawHomeworkClass = [{ id: 'class-1', name: '五年级1班数学' }, { id: 'class-2', name: '五年级3班数学' }, { id: 'class-4', name: '五年级6班数学' }]
@@ -128,14 +123,15 @@ function handlePublishHomework() {
     <!-- 自定义nav-bar -->
     <div class="px-30rpx pb-60rpx bg-#00A76E">
       <shy-custom-nav-bar>
-        <template #icon>
-          <div class="i-carbon-chevron-left text-white h-35rpx w-35rpx" @tap="handleClickBack" />
-        </template>
-        <template #content>
+        <div class="flex w-250 items-center">
+          <div class="i-carbon-chevron-left text-white h-35rpx w-35rpx" @tap="handleBackPage" />
+        </div>
+        <div class="text-center w-250">
           <div class="text-32rpx font-bold text-white">
             发布作业
           </div>
-        </template>
+        </div>
+        <div class="w-250" />
       </shy-custom-nav-bar>
     </div>
     <div class="transform-translate-y--25rpx">
