@@ -5,3 +5,7 @@ export function handleToPage(name: string) {
     })
   }
 }
+
+export function handleBackPage() {
+  uni.navigateBack()
+}
