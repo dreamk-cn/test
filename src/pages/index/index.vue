@@ -135,7 +135,7 @@ onLoad(() => {
           <shy-card-homework
             :title="item.title" :type="item.type" :status="item.status" :start-time="item.start_time"
             :end-time="item.end_time"
-            @tap="handleToPage('correctionDetail')"
+            @report="handleToPage('correctionDetail/index')"
           >
             <div class="mb-10rpx text-26rpx font-bold text-[#000333]">
               <text class="text-36rpx text-[#00A76E]">

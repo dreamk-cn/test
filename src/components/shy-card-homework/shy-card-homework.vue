@@ -15,6 +15,8 @@ const props = withDefaults(defineProps<{
   showIcon: true,
 })
 
+const emits = defineEmits(['detail', 'report'])
+
 // 状态映射对象
 const statusMap = {
   1: { message: '已批改', styleClass: 'i-carbon-checkmark text-green' },
@@ -86,10 +88,10 @@ const typeStyle = computed(() => typeMap[props.status].style)
         <slot />
       </div>
       <div class="flex">
-        <button class="uno-btn">
+        <button class="uno-btn" @tap="$emit('detail', title)">
           作业详情
         </button>
-        <button class="uno-btn btn-green ml-20rpx">
+        <button class="uno-btn ml-20rpx btn-green" @tap="$emit('report', title)">
           学情报告
         </button>
       </div>
