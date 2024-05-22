@@ -1,13 +1,13 @@
 <script setup lang="ts">
 const quickEntryList = [
-  { name: '发布作业', imgUrl: `../../static/icon/index-setion/section1.png`, page: 'publishHomework' },
+  { name: '发布作业', imgUrl: `../../static/icon/index-setion/section1.png`, page: 'publishHomework/index' },
   { name: '批改作业', imgUrl: `../../static/icon/index-setion/section2.png`, page: '' },
   { name: '发布学习计划', imgUrl: `../../static/icon/index-setion/section3.png`, page: '' },
   { name: '共性错题分析', imgUrl: `../../static/icon/index-setion/section4.png`, page: '' },
   { name: '离线批改', imgUrl: `../../static/icon/index-setion/section5.png`, page: '' },
   { name: '学情分析', imgUrl: `../../static/icon/index-setion/section6.png`, page: '' },
   { name: '挑题组卷', imgUrl: `../../static/icon/index-setion/section7.png`, page: '' },
-  { name: '我的积分', imgUrl: `../../static/icon/index-setion/section8.png`, page: '' },
+  { name: '我的积分', imgUrl: `../../static/icon/index-setion/section8.png`, page: 'mine/credit' },
 ]
 function handleTo(name: string) {
   if (name === '') {
