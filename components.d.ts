@@ -16,6 +16,9 @@ declare module 'vue' {
     GuoduLoading: typeof import('./src/widgets/guodu-loading/guodu-loading.vue')['default']
     GuoduModal: typeof import('./src/widgets/guodu-modal/guodu-modal.vue')['default']
     GuoduNavBar: typeof import('./src/widgets/guodu-nav-bar/guodu-nav-bar.vue')['default']
+    GuoduTable: typeof import('./src/widgets/guodu-table/guodu-table.vue')['default']
+    GuoduTableBody: typeof import('./src/widgets/guodu-table-body/guodu-table-body.vue')['default']
+    GuoduTableHeader: typeof import('./src/widgets/guodu-table-header/guodu-table-header.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ShyCardCorrectiondDetails: typeof import('./src/components/shy-card-correctiond-details/shy-card-correctiond-details.vue')['default']
@@ -26,5 +29,6 @@ declare module 'vue' {
     ShyDaySelector: typeof import('./src/components/shy-day-selector/shy-day-selector.vue')['default']
     ShyLoadMore: typeof import('./src/components/shy-load-more/shy-load-more.vue')['default']
     ShyQuickEntry: typeof import('./src/components/shy-quick-entry/shy-quick-entry.vue')['default']
+    ShyTable: typeof import('./src/components/shy-table/shy-table.vue')['default']
   }
 }

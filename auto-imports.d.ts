@@ -20,8 +20,9 @@ declare global {
   const getActivePinia: typeof import('pinia')['getActivePinia']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
-  const getDate: typeof import('./src/composables/ussDate')['getDate']
+  const getDate: typeof import('./src/composables/useDate')['getDate']
   const h: typeof import('vue')['h']
+  const handleBackPage: typeof import('./src/composables/useNavigateTo')['handleBackPage']
   const handleSelectDate: typeof import('./src/composables/useSelectDate')['handleSelectDate']
   const handleTo: typeof import('./src/composables/useNavigateTo')['handleTo']
   const handleToPage: typeof import('./src/composables/useNavigateTo')['handleToPage']
@@ -138,8 +139,9 @@ declare module 'vue' {
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
-    readonly getDate: UnwrapRef<typeof import('./src/composables/ussDate')['getDate']>
+    readonly getDate: UnwrapRef<typeof import('./src/composables/useDate')['getDate']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
+    readonly handleBackPage: UnwrapRef<typeof import('./src/composables/useNavigateTo')['handleBackPage']>
     readonly handleToPage: UnwrapRef<typeof import('./src/composables/useNavigateTo')['handleToPage']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly isClient: UnwrapRef<typeof import('./src/composables/index')['isClient']>
@@ -246,8 +248,9 @@ declare module '@vue/runtime-core' {
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
-    readonly getDate: UnwrapRef<typeof import('./src/composables/ussDate')['getDate']>
+    readonly getDate: UnwrapRef<typeof import('./src/composables/useDate')['getDate']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
+    readonly handleBackPage: UnwrapRef<typeof import('./src/composables/useNavigateTo')['handleBackPage']>
     readonly handleToPage: UnwrapRef<typeof import('./src/composables/useNavigateTo')['handleToPage']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly isClient: UnwrapRef<typeof import('./src/composables/index')['isClient']>
