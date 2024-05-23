@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<{
   showIcon: true,
 })
 
-const emits = defineEmits(['detail', 'report'])
+defineEmits(['detail', 'report'])
 
 // 状态映射对象
 const statusMap = {

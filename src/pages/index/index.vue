@@ -106,7 +106,7 @@ onLoad(() => {
 </script>
 
 <template>
-  <div class="page-index top-bg pb-30rpx bg-[#f5f5f9] relative min-h-100vh">
+  <div class="top-bg page-index pb-30rpx bg-[#f5f5f9] relative min-h-100vh">
     <!-- 顶部日期部分 -->
     <div>
       <!-- 自定义头部导航栏 -->
