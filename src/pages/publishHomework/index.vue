@@ -68,8 +68,9 @@ function handleSelectEndTime(e: { detail: { value: string } }) {
 
 /// / 设置成绩
 const isScore = ref(false)
-function handleSetScore(e: { detail: { value: boolean } }) {
-  isScore.value = e.detail.value
+function handleSetScore(e: Event) {
+  const event = e as CustomEvent<{ value: boolean }>
+  isScore.value = event.detail.value
 }
 
 // 批改类型 && 铺码方式
