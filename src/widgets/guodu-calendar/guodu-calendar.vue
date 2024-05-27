@@ -119,7 +119,7 @@ function handleCancel() {
 </script>
 
 <template>
-  <div class="py-3 bg-$base-color rounded-t-xl text-$text-color-1 w-full">
+  <div class="py-3 bg-$bg-color rounded-t-xl w-full">
     <!-- 头部 -->
     <div class="leading-80rpx flex-center">
       <div class="i-carbon:chevron-left px-5" @tap="handleChangeLastMonth" />
@@ -131,27 +131,27 @@ function handleCancel() {
     <div class="flex w-full">
       <div v-if="props.mode === 'week'" class="h-full w-80rpx">
         <!-- 这里展示周的序号 -->
-        <div class="text-$text-color-3 flex-center flex-1 flex-col h-80rpx">
+        <div class="text-#333/80 text-#666/50 flex-center flex-1 flex-col h-80rpx">
           周
         </div>
         <div class="grid grid-cols-1 gap-y-5rpx">
-          <div v-for="item in calendar.weekNos" :key="item" class="p-5rpx text-$text-color-3 flex-center h-80rpx">
+          <div v-for="item in calendar.weekNos" :key="item" class="p-5rpx text-#666/50 flex-center h-80rpx">
             {{ item }}
           </div>
         </div>
       </div>
       <div class="flex-1">
         <div class="grid grid-cols-7">
-          <div v-for="week, idx in weekNames" :key="idx" class="text-$text-color-3 flex-center flex-1 flex-col h-80rpx">
+          <div v-for="week, idx in weekNames" :key="idx" class="text-#333/80 flex-center flex-1 flex-col h-80rpx">
             {{ week }}
           </div>
         </div>
         <div class="grid grid-cols-7 gap-y-5rpx">
-          <div v-for="day in calendar.weeks.splice(props.startWeek)" :key="`${day.month}-${day.day}`" class="h-80rpx" @tap="handleSelectDay(day)">
+          <div v-for="day in [...calendar.weeks].splice(props.startWeek)" :key="`${day.month}-${day.day}`" class="h-80rpx" @tap="handleSelectDay(day)">
             <slot v-if="hasSlot('day')" name="day" :item="day" />
             <template v-else>
-              <div class="p-5rpx flex-center h-full w-full" :class="{ 'text-#aaa': !day.currentMonth, 'bg-$primary-color': day.isSelected && day.currentMonth, 'rounded-r-full': day.isSelectedEnd && day.currentMonth, 'rounded-l-full': day.isSelectedStart && day.currentMonth }">
-                <div class="flex-center h-full w-full" :class="{ 'bg-$info-color rounded-full': day.currentMonth && (day.isSelectedStart || day.isSelectedEnd) }">
+              <div class="p-5rpx flex-center h-full w-full" :class="{ 'text-#aaa': !day.currentMonth, 'bg-#F6F7FA': day.isSelected && day.currentMonth, 'rounded-r-full': day.isSelectedEnd && day.currentMonth, 'rounded-l-full': day.isSelectedStart && day.currentMonth }">
+                <div class="flex-center h-full w-full" :class="{ 'bg-$primary-color text-$primary-text-color rounded-full': day.currentMonth && (day.isSelectedStart || day.isSelectedEnd) }">
                   {{ day.day }}
                 </div>
               </div>
@@ -161,10 +161,10 @@ function handleCancel() {
       </div>
     </div>
     <div class="p-3 p-b-0 flex gap-3 w-full">
-      <button class="bg-$base-color b-1 b-#CAD1D9 rounded-lg b-solid text-36rpx leading-80rpx flex-1 h-80rpx" @tap="handleCancel">
+      <button class="bg-$bg-color b-1 b-#CAD1D9 rounded-lg b-solid text-36rpx leading-80rpx flex-1 h-80rpx" @tap="handleCancel">
         取消
       </button>
-      <button class="bg-$primary-color rounded-lg text-32rpx leading-80rpx text-white flex-1 h-80rpx" @tap="handleSubmit">
+      <button class="bg-$primary-color rounded-lg text-32rpx leading-80rpx text-$primary-text-color flex-1 h-80rpx" @tap="handleSubmit">
         确定
       </button>
     </div>
