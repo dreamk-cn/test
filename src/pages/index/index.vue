@@ -2,6 +2,7 @@
 import { Fetch } from '~/utils/fetch'
 import { api } from '~/config/api'
 import type { DayType, HomeworkDetailType } from '~/types/homework'
+import { debounce } from '~/utils/debounceAndThrottle'
 
 const currentDate = ref(getDate(''))
 const { list: homeworkList, isLoading, isLoadAll, load, clear, next } = useFetchPage<HomeworkDetailType>(api.getHomeworkList)
@@ -46,7 +47,9 @@ function onDayChange(index: number) {
 }
 // 获取年/月下的天数及作业数量
 function fetchDays() {
-  uni.showLoading()
+  uni.showLoading({
+    mask: true,
+  })
   const [year, month] = currentDate.value.split('/')
   Fetch<Array<DayType>>(api.getHomeworkDays, { method: 'GET', data: { year, month } }).then((data) => {
     dayList.value = data
@@ -72,13 +75,18 @@ function fetchDays() {
   })
 }
 
-// 监听当天天数的变化，重新进行请求
-watch(curDayIndex, () => {
+// 防抖
+const debounceGetHomeworkList = debounce(() => {
   // 判断今天有无作业，如果有在请求
   if (todayHomeworkCount.value > 0) {
     clear()
     load({ day: curDayIndex.value + 1, count: todayHomeworkCount.value })
   }
+}, 500)
+
+// 监听当天天数的变化，重新进行请求
+watch(curDayIndex, () => {
+  debounceGetHomeworkList()
 })
 
 // 下拉刷新，重置请求参数
